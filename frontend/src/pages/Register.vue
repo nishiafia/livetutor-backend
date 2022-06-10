@@ -211,7 +211,7 @@ export default {
         .then(function () {
           self.$store
             .dispatch("user/login", {
-              phone: self.mobile,
+              phone: self.mobile.replace("-", ""),
               password: self.password,
             })
             .then(() =>
