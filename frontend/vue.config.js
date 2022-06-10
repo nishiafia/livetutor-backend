@@ -5,7 +5,7 @@ module.exports = {
     writeToDisk: true,
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: "https://www.apps.livetutor.com.bd",
         ws: true,
         changeOrigin: true,
       },
