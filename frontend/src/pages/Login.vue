@@ -70,14 +70,10 @@ export default {
     login() {
       this.$store
         .dispatch("user/login", {
-          phone: this.mobile.replace('-',''),
+          phone: this.mobile.replace("-", ""),
           password: this.password,
         })
-        .then(() =>
-          this.$store.getters["user/isAuthenticated"]
-            ? this.$router.push("/profile")
-            : null
-        );
+        .then(() => this.$router.push("/profile"));
 
       // let self = this;
       // axios

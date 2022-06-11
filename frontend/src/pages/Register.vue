@@ -214,10 +214,11 @@ export default {
               phone: self.mobile.replace("-", ""),
               password: self.password,
             })
-            .then(() =>
-              self.$store.getters["user/loggedIn"]
-                ? self.$router.push("/complete")
-                : null
+            .then(
+              () => self.$router.push("/profile")
+              // self.$store.getters["user/loggedIn"]
+              //   ? self.$router.push("/complete")
+              //   : null
             );
         })
         .catch(function (error) {
