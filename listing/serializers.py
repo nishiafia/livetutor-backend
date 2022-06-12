@@ -3,7 +3,7 @@ from categories.serializers import (CategorySerializer, GradeSerializer,
 from rest_framework import serializers
 from users.serializers import UserSerializer
 
-from .models import Booking, TeacherListing
+from .models import TeacherListing
 
 
 class TeacherListPricingSerializer(serializers.Serializer):
@@ -33,12 +33,3 @@ class TeacherListingSerializer(serializers.ModelSerializer):
     # def create(self, validated_data):
     #     print(validated_data)
         # return super().create(validated_data)
-class BookingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Booking
-        fields = '__all__'
-    
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['teacher'] = TeacherListingSerializer(instance.listed_teacher).data
-        return data

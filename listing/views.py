@@ -1,15 +1,12 @@
-
-from urllib import request
-
 from django.db.models import Max, Min
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from paginations import StandardResultsSetPagination
-from rest_framework import filters, generics, response, views, viewsets
+from rest_framework import (decorators, filters, generics, response, views,
+                            viewsets)
 
-from .models import Booking, TeacherListing
-from .serializers import (BookingSerializer, TeacherListingSerializer,
-                          TeacherListPricingSerializer)
+from .models import TeacherListing
+from .serializers import TeacherListingSerializer, TeacherListPricingSerializer
 
 
 class TeacherListPricingView(views.APIView):
@@ -41,7 +38,7 @@ class TeacherListingViewset(viewsets.ModelViewSet):
         for i in self.request.query_params:
             if i.replace('[]','') not in filters:
                     filters[i.replace('[]','')] = self.request.query_params.getlist(i) 
-        return   self.queryset.filter(**filters).distinct()
+        return self.queryset.filter(**filters).distinct()
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -51,26 +48,3 @@ class TeacherListingViewset(viewsets.ModelViewSet):
         serializer.save()
         return response.Response(serializer.data)
         # return super().create(request, *args, **kwargs)
-class BookingViewSet(viewsets.ModelViewSet):
-    queryset = Booking.objects.all()
-    serializer_class = BookingSerializer
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(booking_user=request.user)
-        serializer = self.get_serializer(queryset, many=True)
-        return response.Response(serializer.data)
-
-    def create(self, request, *args, **kwargs):
-        data = {
-            'listed_teacher': request.data.get('listed_teacher'),
-            'booking_user': request.user.id,
-            'title': request.data.get('title'),
-            'details': request.data.get('details'),
-        }
-        serializer = self.get_serializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return response.Response(serializer.data, status=201)
-        else:
-            return response.Response(serializer.errors,
-                                     status=400)

@@ -1,15 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-app-bar>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialogCreateListingProfile" width="500">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on"> Setup Listing Account </v-btn>
-          </template>
-          <create-listing-profile></create-listing-profile>
-        </v-dialog>
-      </v-app-bar>
+      <v-col> <user-menu></user-menu></v-col>
     </v-row>
     <v-row
       ><v-col><schedules></schedules></v-col
@@ -47,6 +39,7 @@ import UpcomingMeetings from "@/components/profile/UpcomingMeetings.vue";
 
 import Schedules from "@/components/profile/Schedules.vue";
 import CreateListingProfile from "@/components/profile/forms/CreateListingProfile.vue";
+import UserMenu from "../components/profile/UserMenu.vue";
 export default {
   components: {
     RoomList,
@@ -54,11 +47,10 @@ export default {
     CreateListingProfile,
     Schedules,
     UserTabs,
+    UserMenu,
   },
   data() {
-    return {
-      dialogCreateListingProfile: false,
-    };
+    return {};
   },
 };
 </script>

@@ -1,5 +1,8 @@
 <template>
   <v-card class="pa-4">
+    <v-app-bar outlined>
+      <v-app-bar-title>Manage Your Teacher Listing Details</v-app-bar-title>
+    </v-app-bar>
     <v-radio-group v-model="type" label="Listing Type" row>
       <v-radio label="Individual" value="individual"> </v-radio>
       <v-radio label="Organization" value="organization"> </v-radio>

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Booking, TeacherListing, TeacherLocation, TeacherPremium
+from .models import TeacherListing, TeacherLocation, TeacherPremium
 
 
 @admin.register(TeacherPremium)
@@ -19,6 +19,3 @@ class TeacherListingAdmin(admin.ModelAdmin):
                     'active', 'verified']
 
 
-@admin.register(Booking)
-class BookingAdmin(admin.ModelAdmin):
-    pass

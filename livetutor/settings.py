@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_seed',
+    'django_seed', 'rest_framework',
     'users',
     'room',
     'payment',
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'meeting',
     'listing',
     'categories',
-    'rest_framework',
+   
+    'booking'
 
 ]
 

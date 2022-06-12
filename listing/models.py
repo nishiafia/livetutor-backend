@@ -27,12 +27,6 @@ class TeacherListing(MetaFields):
     # subject #price #category->subject #class
 
 
-class Booking(MetaFields):
-    listed_teacher = models.ForeignKey(
-        TeacherListing, on_delete=models.CASCADE)
-    booking_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(null=True, blank=True, max_length=100)
-    details = models.TextField(null=True, blank=True)
 
 
 class TeacherPremium(MetaFields):

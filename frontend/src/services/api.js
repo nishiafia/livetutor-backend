@@ -3,7 +3,9 @@ import Vue from "vue";
 
 const access_token = localStorage.getItem("access");
 
-const base_url = "https://www.apps.livetutor.com.bd/api/";
+// const base_url = "https://apps.livetutor.com.bd/api/";
+
+const base_url = "http://localhost:8000/api/";
 let config = {
   baseURL: base_url,
 };
