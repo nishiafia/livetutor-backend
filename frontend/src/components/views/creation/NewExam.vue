@@ -6,7 +6,11 @@
     <v-form v-on:submit.prevent="save">
       <v-row>
         <v-col>
-          <v-text-field v-model="name" label="Title" hide-details="auto"></v-text-field>
+          <v-text-field
+            v-model="name"
+            label="Title"
+            hide-details="auto"
+          ></v-text-field>
         </v-col>
 
         <v-col>
@@ -26,10 +30,17 @@
 
       <v-row>
         <v-col>
-          <v-text-field v-model="details" label="Short Description"></v-text-field>
+          <v-text-field
+            v-model="details"
+            label="Short Description"
+          ></v-text-field>
         </v-col>
         <v-col>
-          <v-text-field v-model="mark" type="number" label="Mark"></v-text-field>
+          <v-text-field
+            v-model="mark"
+            type="number"
+            label="Mark"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
@@ -49,7 +60,7 @@
             ref="menu"
             v-model="menu"
             :close-on-content-click="false"
-            :return-value.sync="date"
+            :return-value.sync="exam_date"
             transition="scale-transition"
             offset-y
             min-width="auto"
@@ -67,7 +78,9 @@
             <v-date-picker v-model="exam_date" :min="today" no-title scrollable>
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(exam_date)"> OK </v-btn>
+              <v-btn text color="primary" @click="$refs.menu.save(exam_date)">
+                OK
+              </v-btn>
             </v-date-picker>
           </v-menu></v-col
         >
@@ -142,7 +155,9 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('closeDialog')"> Close </v-btn>
+        <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
+          Close
+        </v-btn>
         <v-btn color="blue darken-1" type="submit" text> Save </v-btn>
       </v-card-actions>
     </v-form>
@@ -154,15 +169,25 @@ function initialState() {
   return {
     name: "",
     details: "",
-    dates: "",
+    exam_date: null,
     start_time: null,
     end_time: null,
+    mark: "",
     menu: false,
     menu2: false,
     menu3: false,
-
-    mark: "",
-    colors: ["blue", "indigo", "deep-purple", "cyan", "green", "orange", "grey darken-1"],
+    selected_class: {},
+    attachments: {},
+    // classes: this.$store.state.classes.classes,
+    colors: [
+      "blue",
+      "indigo",
+      "deep-purple",
+      "cyan",
+      "green",
+      "orange",
+      "grey darken-1",
+    ],
   };
 }
 export default {
@@ -181,7 +206,15 @@ export default {
       selected_class: {},
       attachments: {},
       // classes: this.$store.state.classes.classes,
-      colors: ["blue", "indigo", "deep-purple", "cyan", "green", "orange", "grey darken-1"],
+      colors: [
+        "blue",
+        "indigo",
+        "deep-purple",
+        "cyan",
+        "green",
+        "orange",
+        "grey darken-1",
+      ],
     };
   },
   emits: ["closeDialog"],
@@ -197,9 +230,9 @@ export default {
         start_date_time: `${this.exam_date} ${this.start_time}`,
         end_date_time: `${this.exam_date} ${this.end_time}`,
         mark: this.mark,
-      }) &&
-        //Object.assign(this.$data, initialState()) &&
-        this.$emit("closeDialog");
+      });
+      Object.assign(this.$data, initialState());
+      this.$emit("closeDialog");
     },
     getSelectText(item) {
       return item.section;

@@ -1,10 +1,16 @@
 from listing.serializers import TeacherListingSerializer
 from rest_framework import serializers
 
-from .models import Booking
+from .models import Booking, BookingResponse
 
+
+class BookingResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingResponse
+        fields = '__all__'
 
 class BookingSerializer(serializers.ModelSerializer):
+    booking_responses = BookingResponseSerializer(many=True, required=False)
     class Meta:
         model = Booking
         fields = '__all__'

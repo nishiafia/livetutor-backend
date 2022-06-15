@@ -6,7 +6,11 @@
     <v-form v-on:submit.prevent="save" class="pa-4">
       <v-row>
         <v-col>
-          <v-text-field v-model="name" label="Title" hide-details="auto"></v-text-field>
+          <v-text-field
+            v-model="name"
+            label="Title"
+            hide-details="auto"
+          ></v-text-field>
         </v-col>
 
         <v-col>
@@ -23,8 +27,12 @@
             } | Session: ${selected_class.session || 'Not Selected'}`"
             return-object
           >
-            <template v-slot:selection="{ item }">{{ item.name }} - {{ item.section }} </template>
-            <template v-slot:item="{ item }">{{ item.name }} - {{ item.section }} </template>
+            <template v-slot:selection="{ item }"
+              >{{ item.name }} - {{ item.section }}
+            </template>
+            <template v-slot:item="{ item }"
+              >{{ item.name }} - {{ item.section }}
+            </template>
           </v-select>
         </v-col>
 
@@ -37,7 +45,10 @@
           </v-row> -->
       </v-row>
       <v-row>
-        <v-text-field v-model="details" label="Short Description"></v-text-field>
+        <v-text-field
+          v-model="details"
+          label="Short Description"
+        ></v-text-field>
       </v-row>
       <v-row>
         <v-file-input
@@ -52,7 +63,9 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('closeDialog')"> Close </v-btn>
+        <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
+          Close
+        </v-btn>
         <v-btn type="submit" color="blue darken-1" text> Save </v-btn>
       </v-card-actions>
     </v-form>
@@ -64,6 +77,27 @@ import { mapGetters } from "vuex";
 
 export default {
   props: ["class_id"],
+  initialState() {
+    return {
+      name: "",
+      details: "",
+      date: "",
+      attachments: {},
+      menu: false,
+      topic: "",
+      selected_class: {},
+      // classes: this.$store.state.classes.classes,
+      colors: [
+        "blue",
+        "indigo",
+        "deep-purple",
+        "cyan",
+        "green",
+        "orange",
+        "grey darken-1",
+      ],
+    };
+  },
   data: function () {
     return {
       name: "",
@@ -74,7 +108,15 @@ export default {
       topic: "",
       selected_class: {},
       // classes: this.$store.state.classes.classes,
-      colors: ["blue", "indigo", "deep-purple", "cyan", "green", "orange", "grey darken-1"],
+      colors: [
+        "blue",
+        "indigo",
+        "deep-purple",
+        "cyan",
+        "green",
+        "orange",
+        "grey darken-1",
+      ],
     };
   },
   emits: ["closeDialog"],
@@ -90,23 +132,9 @@ export default {
         attachments: this.attachments,
       };
 
-      // let formData = new FormData();
-      // formData.append("attachments", data.attachments);
-      // for (var key in data) {
-      //   formData.append(key, data[key]);
-      //   console.log(key, data[key]);
-      // }
-      // console.log(formData);
-      // // formData.append(JSON.stringify(data));
-      // formData.append("fuu", this.attachments);
-      // api
-      //   .post("http://localhost:8000/api/files/notes/", formData, {
-      //     headers: { "content-type": "multipart/form-data" },
-      //   })
-      //   .then((res) => console.log(res));
       this.$store.dispatch("notes/add", data);
-      // &&
-      //Object.assign(this.$data, initialState()) &&
+
+      Object.assign(this.$data, initialState());
       this.$emit("closeDialog");
     },
     getSelectText(item) {

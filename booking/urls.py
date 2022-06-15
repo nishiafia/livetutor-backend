@@ -10,6 +10,7 @@ from .views import BookingViewSet
 router = ExtendedSimpleRouter()
 
 router.register(r'booking', BookingViewSet, basename='booking')
+
 urlpatterns = [
     path('', include(router.urls)),
 

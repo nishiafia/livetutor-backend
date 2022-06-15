@@ -40,7 +40,6 @@ class TeacherPremium(MetaFields):
 
 class TeacherLocation(models.Model):
     # TODO Remove Pass
-    pass
     # THANA, DISTRICT, CITY, AREA, VILLAGE, STREET, POSTCODE
     teacher = models.OneToOneField(TeacherListing, on_delete=models.CASCADE)
     # thana = models.ForeignKey(Thana, on_delete=models.CASCADE, null=True)

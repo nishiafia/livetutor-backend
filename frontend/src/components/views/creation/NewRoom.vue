@@ -11,8 +11,8 @@
             v-model="selected_categories"
             label="Category"
             :items="categories"
-            item-text="name"
-            item-value="name"
+            item-text="title"
+            item-value="title"
             chips
             multiple
             :return-object="false"
@@ -40,13 +40,13 @@
 <script>
 import NewMeeting from "./NewMeeting.vue";
 import api from "@/services/api";
-// function initialState() {
-//   return {
-//     name: "",
-//     section: "",
-//     session: "",
-//   };
-// }
+function initialState() {
+  return {
+    title: "",
+    categories: [],
+    selected_categories: [],
+  };
+}
 export default {
   name: "NewClass",
   components: { NewMeeting },
@@ -63,9 +63,7 @@ export default {
   emits: ["closeDialog"],
   // props: ["selectedDate"],
   created() {
-    api
-      .get("/categories")
-      .then((res) => (this.categories = res.data));
+    api.get("/categories/").then((res) => (this.categories = res.data));
   },
   methods: {
     save() {
@@ -75,9 +73,8 @@ export default {
       });
       this.e1 = 2;
 
-      // &&
-      //Object.assign(this.$data, initialState()) &&
-      // this.$emit("closeDialog");
+      Object.assign(this.$data, initialState());
+      this.$emit("closeDialog");
     },
     to_next_step() {
       this.e1 += 1;

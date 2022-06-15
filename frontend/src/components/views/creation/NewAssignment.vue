@@ -148,7 +148,6 @@ function initialState() {
     mark: 0,
     selected_class: {},
     attachments: {},
-    classes: this.$store.state.classes.classes,
     colors: [
       "blue",
       "indigo",
@@ -198,9 +197,9 @@ export default {
         room: this.class_id ? this.class_id : this.selected_class.id,
         submission_date_time: `${this.due_date} ${this.due_time}`,
         mark: this.mark,
-      }) &&
-        Object.assign(this.$data, initialState()) &&
-        this.$emit("closeDialog");
+      });
+      Object.assign(this.$data, initialState());
+      this.$emit("closeDialog");
     },
     getSelectText(item) {
       return item.section;
