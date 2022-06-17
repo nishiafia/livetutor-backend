@@ -16,8 +16,7 @@ export default {
           commit("loadTokens", { access, refresh });
         })
         .then(() => dispatch("validate"))
-
-        .catch((err) => console.log(err));
+        .catch((err) => alert(err));
       // .then(() => {
       //     const { access, refresh } = this.state;
       //     localStorage.setItem("auth", JSON.stringify({ access, refresh }));
@@ -26,7 +25,7 @@ export default {
     },
 
     validate({ state, commit, dispatch }) {
-      api
+      return api
         .post("users/verify/", null, {
           headers: { Authorization: `Bearer ${state.access}` },
         })
@@ -39,7 +38,10 @@ export default {
           dispatch("classes/get", null, { root: true });
           dispatch("meetings/get", null, { root: true });
         })
-        .catch(() => dispatch("user/logout"));
+        .catch(() => {
+          alert("Could not Login");
+          return dispatch("user/logout");
+        });
     },
     logout({ commit }) {
       commit("clear");

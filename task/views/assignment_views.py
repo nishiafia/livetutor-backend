@@ -40,7 +40,7 @@ class AssignmentViewset(NestedViewSetMixin, ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         files = [{'file': file}
-                 for file in request.data.pop('attachments[]')]
+                 for file in request.data.getlist('attachments[]')]
         data = {
             'name': request.data.get('name'),
             'description': request.data.get('description'),

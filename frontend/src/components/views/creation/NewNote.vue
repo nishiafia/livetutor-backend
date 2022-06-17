@@ -74,30 +74,30 @@
 <script>
 import api from "@/services/api";
 import { mapGetters } from "vuex";
-
+function initialState() {
+  return {
+    name: "",
+    details: "",
+    date: "",
+    attachments: {},
+    menu: false,
+    topic: "",
+    selected_class: {},
+    // classes: this.$store.state.classes.classes,
+    colors: [
+      "blue",
+      "indigo",
+      "deep-purple",
+      "cyan",
+      "green",
+      "orange",
+      "grey darken-1",
+    ],
+  };
+}
 export default {
   props: ["class_id"],
-  initialState() {
-    return {
-      name: "",
-      details: "",
-      date: "",
-      attachments: {},
-      menu: false,
-      topic: "",
-      selected_class: {},
-      // classes: this.$store.state.classes.classes,
-      colors: [
-        "blue",
-        "indigo",
-        "deep-purple",
-        "cyan",
-        "green",
-        "orange",
-        "grey darken-1",
-      ],
-    };
-  },
+
   data: function () {
     return {
       name: "",
@@ -131,9 +131,7 @@ export default {
         // created_at: new Date().toLocaleString(),
         attachments: this.attachments,
       };
-
       this.$store.dispatch("notes/add", data);
-
       Object.assign(this.$data, initialState());
       this.$emit("closeDialog");
     },
