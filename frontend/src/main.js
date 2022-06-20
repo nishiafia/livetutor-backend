@@ -8,7 +8,7 @@ import { store } from "@/store/index";
 import vuetify from "./plugins/vuetify";
 import "vuetify/dist/vuetify.min.css";
 import api from "@/services/api";
-import VueTelInputVuetify from 'vue-tel-input-vuetify/lib';
+import VueTelInputVuetify from "vue-tel-input-vuetify/lib";
 
 Vue.use(VueTelInputVuetify, {
   vuetify,
@@ -24,7 +24,8 @@ Vue.use(VueTelInputVuetify, {
 
 //Vue.prototype.$apiAddress = "http://127.0.0.1:8000";
 // Vue.use(store);
-Vue.config.performance = true;
+(Vue.prototype.$requiredRules = [(v) => !!v || "This Field is Required"]),
+  (Vue.config.performance = true);
 new Vue({
   el: "#app",
   router,

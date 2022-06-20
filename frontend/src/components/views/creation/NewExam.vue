@@ -3,13 +3,14 @@
     <v-card-title>
       <span class="text-h5">Create New Exam {{ this.class_id }}</span>
     </v-card-title>
-    <v-form v-on:submit.prevent="save">
+    <v-form v-on:submit.prevent="save" ref="form">
       <v-row>
         <v-col>
           <v-text-field
             v-model="name"
             label="Title"
             hide-details="auto"
+            :rules="$requiredRules"
           ></v-text-field>
         </v-col>
 
@@ -23,6 +24,7 @@
             item-value="id"
             persistent-hint
             return-object
+            :rules="$requiredRules"
           >
           </v-select>
         </v-col>
@@ -37,6 +39,7 @@
         </v-col>
         <v-col>
           <v-text-field
+            :rules="$requiredRules"
             v-model="mark"
             type="number"
             label="Mark"
@@ -59,6 +62,7 @@
           <v-menu
             ref="menu"
             v-model="menu"
+            :rules="$requiredRules"
             :close-on-content-click="false"
             :return-value.sync="exam_date"
             transition="scale-transition"
@@ -68,6 +72,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="exam_date"
+                :rules="$requiredRules"
                 label="Exam Date"
                 prepend-icon="mdi-calendar"
                 readonly
@@ -101,6 +106,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="start_time"
+                :rules="$requiredRules"
                 label="Start Time"
                 prepend-icon="mdi-clock-time-four-outline"
                 readonly
@@ -111,6 +117,7 @@
             <v-time-picker
               v-if="menu2"
               ampm-in-title
+              :rules="$requiredRules"
               format="ampm"
               color="red lighten-1"
               v-model="start_time"
@@ -134,6 +141,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="end_time"
+                :rules="$requiredRules"
                 label="Submission Time"
                 prepend-icon="mdi-clock-time-four-outline"
                 readonly
@@ -167,6 +175,7 @@
 import { mapGetters } from "vuex";
 function initialState() {
   return {
+    form: "",
     name: "",
     details: "",
     exam_date: null,
@@ -194,6 +203,7 @@ export default {
   props: ["class_id"],
   data: function () {
     return {
+      form: "",
       name: "",
       details: "",
       exam_date: null,
@@ -222,17 +232,19 @@ export default {
 
   methods: {
     save() {
-      this.$store.dispatch("exams/add", {
-        name: this.name,
-        description: this.details,
-        room: this.class_id ? this.class_id : this.selected_class.id,
-        attachments: this.attachments,
-        start_date_time: `${this.exam_date} ${this.start_time}`,
-        end_date_time: `${this.exam_date} ${this.end_time}`,
-        mark: this.mark,
-      });
-      Object.assign(this.$data, initialState());
-      this.$emit("closeDialog");
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("exams/add", {
+          name: this.name,
+          description: this.details,
+          room: this.class_id ? this.class_id : this.selected_class.id,
+          attachments: this.attachments,
+          start_date_time: `${this.exam_date} ${this.start_time}`,
+          end_date_time: `${this.exam_date} ${this.end_time}`,
+          mark: this.mark,
+        });
+        Object.assign(this.$data, initialState());
+        this.$emit("closeDialog");
+      }
     },
     getSelectText(item) {
       return item.section;

@@ -3,18 +3,20 @@
     <v-card-title>
       <span class="text-h5">Create New Assignment {{ this.class_id }}</span>
     </v-card-title>
-    <v-form v-on:submit.prevent="save">
+    <v-form v-on:submit.prevent="save" ref="form">
       <v-row>
         <v-col>
           <v-text-field
             v-model="name"
             label="Title"
             hide-details="auto"
+            :rules="$requiredRules"
           ></v-text-field>
         </v-col>
         <v-col>
           <v-select
             v-if="!class_id"
+            :rules="$requiredRules"
             v-model="selected_class"
             label="Select Class"
             :items="classes"
@@ -26,12 +28,8 @@
             } | Session: ${selected_class.session || 'Not Selected'}`"
             return-object
           >
-            <template v-slot:selection="{ item }"
-              >{{ item.name }} - {{ item.section }}
-            </template>
-            <template v-slot:item="{ item }"
-              >{{ item.name }} - {{ item.section }}
-            </template>
+            <template v-slot:selection="{ item }">{{ item.name }} </template>
+            <template v-slot:item="{ item }">{{ item.name }} </template>
           </v-select>
         </v-col>
       </v-row>
@@ -47,6 +45,7 @@
             type="number"
             v-model="mark"
             label="Mark"
+            :rules="$requiredRules"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -80,6 +79,7 @@
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                :rules="$requiredRules"
               ></v-text-field>
             </template>
             <v-date-picker v-model="due_date" :min="today" no-title scrollable>
@@ -108,6 +108,7 @@
                 v-model="due_time"
                 label="Assignment Due Time"
                 prepend-icon="mdi-clock-time-four-outline"
+                :rules="$requiredRules"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -138,6 +139,7 @@
 <script>
 function initialState() {
   return {
+    form: "",
     name: "",
     details: "",
     due_date: null,
@@ -190,16 +192,19 @@ export default {
 
   methods: {
     save() {
-      this.$store.dispatch("assignments/add", {
-        name: this.name,
-        description: this.details,
-        attachments: this.attachments,
-        room: this.class_id ? this.class_id : this.selected_class.id,
-        submission_date_time: `${this.due_date} ${this.due_time}`,
-        mark: this.mark,
-      });
-      Object.assign(this.$data, initialState());
-      this.$emit("closeDialog");
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("assignments/add", {
+          name: this.name,
+          description: this.details,
+          attachments: this.attachments,
+          room: this.class_id ? this.class_id : this.selected_class.id,
+          submission_date_time: `${this.due_date} ${this.due_time}`,
+          mark: this.mark,
+        });
+        Object.assign(this.$data, initialState());
+        alert("Success");
+        this.$emit("closeDialog");
+      }
     },
     getSelectText(item) {
       return item.section;

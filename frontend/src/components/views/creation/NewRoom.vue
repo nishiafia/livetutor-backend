@@ -6,7 +6,11 @@
     <v-card-text>
       <v-row>
         <v-col>
-          <v-text-field v-model="title" label="Title"></v-text-field>
+          <v-text-field
+            v-model="title"
+            label="Title"
+            :rules="$requiredRules"
+          ></v-text-field>
           <v-combobox
             v-model="selected_categories"
             label="Category"
@@ -53,6 +57,7 @@ export default {
   props: ["from_complete"],
   data: function () {
     return {
+      form: "",
       // id: Math.floor(Math.random() * 1000),
       e1: 1,
       title: "",
@@ -67,14 +72,16 @@ export default {
   },
   methods: {
     save() {
-      this.$store.dispatch("classes/add", {
-        name: this.title,
-        selected_categories: this.selected_categories,
-      });
-      this.e1 = 2;
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("classes/add", {
+          name: this.title,
+          selected_categories: this.selected_categories,
+        });
+        this.e1 = 2;
 
-      Object.assign(this.$data, initialState());
-      this.$emit("closeDialog");
+        Object.assign(this.$data, initialState());
+        this.$emit("closeDialog");
+      }
     },
     to_next_step() {
       this.e1 += 1;

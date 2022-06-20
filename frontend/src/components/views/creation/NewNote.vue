@@ -3,13 +3,14 @@
     <v-card-title>
       <span class="text-h5">Create New Note</span>
     </v-card-title>
-    <v-form v-on:submit.prevent="save" class="pa-4">
+    <v-form ref="form" v-on:submit.prevent="save" class="pa-4">
       <v-row>
         <v-col>
           <v-text-field
             v-model="name"
             label="Title"
             hide-details="auto"
+            :rules="$requiredRules"
           ></v-text-field>
         </v-col>
 
@@ -21,6 +22,7 @@
             :items="user_created_classes"
             item-text="name"
             item-value="id"
+            :rules="$requiredRules"
             persistent-hint
             :hint="`Room: ${selected_class.name || 'Not Selected'} | Section: ${
               selected_class.section || 'Not Selected'
@@ -76,6 +78,7 @@ import api from "@/services/api";
 import { mapGetters } from "vuex";
 function initialState() {
   return {
+    form: "",
     name: "",
     details: "",
     date: "",
@@ -100,6 +103,7 @@ export default {
 
   data: function () {
     return {
+      form: "",
       name: "",
       details: "",
       date: "",
@@ -124,16 +128,18 @@ export default {
 
   methods: {
     save() {
-      const data = {
-        name: this.name,
-        description: this.details,
-        room: this.class_id ? this.class_id : this.selected_class.id,
-        // created_at: new Date().toLocaleString(),
-        attachments: this.attachments,
-      };
-      this.$store.dispatch("notes/add", data);
-      Object.assign(this.$data, initialState());
-      this.$emit("closeDialog");
+      if (this.$refs.form.validate()) {
+        const data = {
+          name: this.name,
+          description: this.details,
+          room: this.class_id ? this.class_id : this.selected_class.id,
+          // created_at: new Date().toLocaleString(),
+          attachments: this.attachments,
+        };
+        this.$store.dispatch("notes/add", data);
+        Object.assign(this.$data, initialState());
+        this.$emit("closeDialog");
+      }
     },
     getSelectText(item) {
       return item.section;
