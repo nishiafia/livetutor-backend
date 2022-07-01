@@ -165,6 +165,7 @@ export default {
   props: ["class_id"],
   data: function () {
     return {
+      form: "",
       name: "",
       details: "",
       due_date: null,
