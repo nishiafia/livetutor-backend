@@ -1,10 +1,11 @@
+from cmath import log
 from distutils.command.build_scripts import first_line_re
 
 from django.shortcuts import render
 from rest_framework import decorators, response, viewsets
 
-from .models import Booking
-from .serializers import BookingSerializer
+from .models import Booking, BookingResponse
+from .serializers import BookingResponseSerializer, BookingSerializer
 
 
 class BookingViewSet(viewsets.ModelViewSet):
@@ -30,8 +31,27 @@ class BookingViewSet(viewsets.ModelViewSet):
         else:
             return response.Response(serializer.errors,
                                      status=400)
+
     @decorators.action(methods=['get'], detail=False, url_path='bookings-for-teacher')
     def get_bookings_for_teacher(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(listed_teacher__user_id=request.user.id)
+        queryset = self.queryset.filter(
+            listed_teacher__user_id=request.user.id)
         serializer = self.get_serializer(queryset, many=True)
         return response.Response(serializer.data)
+
+
+class BookingResponseViewSet(viewsets.ModelViewSet):
+    queryset = BookingResponse.objects.all()
+    serializer_class = BookingResponseSerializer
+
+    def create(self, request, *args, **kwargs):
+        data = {
+            'booking': request.data.get('booking'),
+            'user': request.user.id,
+            'message': request.data.get('message')
+        }
+        serializer = self.get_serializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=201)
+        return response.Response(serializer.errors, status=400)

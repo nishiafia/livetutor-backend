@@ -14,18 +14,14 @@ Vue.use(VueTelInputVuetify, {
   vuetify,
 });
 
-//Vue.prototype.$http = api;
+Vue.prototype.$requiredRules = [(v) => !!v || "This Field is Required"];
+Vue.prototype.$phoneRules = [
+  (v) => !!v || "Phone is required",
+  (v) => /^\d{11}$/.test(v) || "Phone must be 11 digits",
+];
 
-// const access_token = localStorage.getItem("access_token");
+Vue.config.performance = true;
 
-// if (access_token) {
-//   Vue.prototype.$http.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
-// }
-
-//Vue.prototype.$apiAddress = "http://127.0.0.1:8000";
-// Vue.use(store);
-(Vue.prototype.$requiredRules = [(v) => !!v || "This Field is Required"]),
-  (Vue.config.performance = true);
 new Vue({
   el: "#app",
   router,

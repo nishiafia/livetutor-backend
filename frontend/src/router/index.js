@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-
+import { store } from "@/store";
 const Page404 = () => import("@/pages/Page404");
 const Page500 = () => import("@/pages/Page500");
 
@@ -22,6 +22,11 @@ let router = new Router({
   linkActiveClass: "active",
   scrollBehavior: () => ({ y: 0 }),
   routes: configRoutes(),
+});
+router.beforeEach((to, from, next) => {
+  if (!["Login", "Register"].includes(to.name) && !store.getters["user/userIsAuthenticated"])
+    next({ name: "Login" });
+  else next();
 });
 
 export default router;

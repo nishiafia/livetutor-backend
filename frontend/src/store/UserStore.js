@@ -1,3 +1,4 @@
+import axios from "axios";
 import api from "../services/api";
 export default {
   namespaced: true,
@@ -9,21 +10,24 @@ export default {
   },
   actions: {
     login({ commit, dispatch }, { phone, password }) {
-      return api
-        .post("/token/", { phone: phone, password: password })
-        .then((res) => {
-          const { access, refresh } = res.data;
-          commit("loadTokens", { access, refresh });
-        })
-        .then(() => dispatch("validate"))
-        .catch((err) => alert(err));
-      // .then(() => {
-      //     const { access, refresh } = this.state;
-      //     localStorage.setItem("auth", JSON.stringify({ access, refresh }));
-      // })
-      // .catch((err) => ;
+      return new Promise((resolve, reject) => {
+        return api
+          .post("/token/", { phone: phone, password: password })
+          .then((res) => {
+            const { access, refresh } = res.data;
+            commit("loadTokens", { access, refresh });
+          })
+          .then(() => dispatch("validate").then(() => resolve()))
+          .catch((err) => reject(err));
+      });
     },
-
+    register({ commit, dispatch }, { phone, password }) {
+      return new Promise((resolve, reject) => {
+        return api.post("/register/", { phone: phone, password: password }).then(() => {
+          dispatch("login", { phone: phone, password: password }).then(() => resolve());
+        });
+      }).catch((err) => reject(err));
+    },
     validate({ state, commit, dispatch }) {
       return api
         .post("users/verify/", null, {
@@ -39,8 +43,7 @@ export default {
           dispatch("meetings/get", null, { root: true });
         })
         .catch(() => {
-          alert("Could not Login");
-          return dispatch("user/logout");
+          return dispatch("logout");
         });
     },
     logout({ commit }) {

@@ -1,15 +1,21 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="5">
         <v-card elevation="2" class="pa-4" min-height="320">
-          <v-form @submit.prevent="login" method="POST">
+          <v-form @submit.prevent="login" ref="form">
             <v-card-title>Login</v-card-title>
             <v-card-subtitle class="text-muted"
               >Sign In to your account</v-card-subtitle
             >
-            <vue-tel-input-vuetify v-model="mobile"></vue-tel-input-vuetify>
+            <vue-tel-input-vuetify
+              v-model="mobile"
+              :rules="$phoneRules"
+              counter="11"
+              type="tel"
+            ></vue-tel-input-vuetify>
             <v-text-field
+              :rules="$requiredRules"
               v-model="password"
               label="Password"
               type="password"
@@ -29,7 +35,7 @@
           </v-form>
         </v-card>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="5">
         <v-card
           dark
           elevation="2"
@@ -57,6 +63,7 @@ export default {
 
   data() {
     return {
+      form: "",
       mobile: "",
       password: "",
       showMessage: false,
@@ -68,38 +75,15 @@ export default {
       this.$router.push({ path: "register" });
     },
     login() {
-      this.$store
-        .dispatch("user/login", {
-          phone: this.mobile.replace("-", ""),
-          password: this.password,
-        })
-        .then(() => this.$router.push("/profile"));
-
-      // let self = this;
-      // axios
-      //   .post(this.$apiAdress + "/api/login", {
-      //     mobile: self.mobile,
-      //     password: self.password,
-      //   })
-      //   .then(function (response) {
-      //     self.mobile = "";
-      //     self.password = "";
-      //     localStorage.setItem("api_token", response.data.access_token);
-      //     localStorage.setItem("roles", response.data.roles);
-
-      //     self.$store.commit({
-      //       type: "user/change_user",
-      //       user: response.data,
-      //     });
-      //     console.log("api_token=", response.data.access_token);
-      //     console.log("role111=", response.data.roles);
-      //     self.$router.push({ path: "/profile" });
-      //   })
-      //   .catch(function (error) {
-      //     self.message = "Incorrect E-mail or password";
-      //     self.showMessage = true;
-      //     console.log(error);
-      //   });
+      if (this.$refs.form.validate()) {
+        this.$store
+          .dispatch("user/login", {
+            phone: this.mobile.replace("-", ""),
+            password: this.password,
+          })
+          .then(() => this.$router.push("/profile"))
+          .catch(() => alert("Could Not Log In"));
+      }
     },
   },
 };

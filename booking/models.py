@@ -11,8 +11,14 @@ class Booking(MetaFields):
     title = models.CharField(null=True, blank=True, max_length=100)
     details = models.TextField(null=True, blank=True)
 
+
 class BookingResponse(MetaFields):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='booking_responses')
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='booking_responses')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='booking_responses')
+    booking = models.ForeignKey(
+        Booking, on_delete=models.CASCADE, related_name='booking_responses')
     is_read = models.BooleanField(default=False)
     message = models.TextField()
+
+    class Meta:
+        ordering = ['-updated_at']
