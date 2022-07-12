@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-2">
     <v-row
-      ><v-col>
+      ><v-col cols="12" md="6">
         <v-card class="pa-4">
           <v-card-actions>
             <v-btn @click="deleteAssignment" color="red lighten-2" dark outlined
@@ -120,40 +120,30 @@
             </v-col>
           </v-row>
         </v-card> </v-col
-      ><v-col
+      ><v-col cols="12" md="6"
         ><v-card class="pa-4">
-          <v-card-title>Attachments</v-card-title>
+          <v-card-title>
+            <span class="headline">
+              <v-icon>mdi-file-image-outline</v-icon>
+              <span>Files</span>
+            </span></v-card-title
+          >
           <v-row class="fill-height" align="center" justify="center">
-            <template v-for="(file, i) in assignment.files">
-              <v-col :key="i" cols="12" md="3">
-                <v-hover v-slot="{ hover }">
-                  <v-card
-                    :elevation="hover ? 12 : 2"
-                    :class="{ 'on-hover': hover }"
-                  >
-                    <v-img :src="file.file_url" height="100px" contain>
-                      <v-card-title class="text-h6 white--text">
-                        <v-row
-                          class="fill-height flex-column"
-                          justify="space-between"
-                        >
-                          <div class="align-self-center">
-                            <v-btn
-                              :color="transparent"
-                              :class="{ 'show-btns': hover }"
-                              icon
-                              @click="deleteFile(file)"
-                            >
-                              <v-icon> mdi-delete </v-icon>
-                            </v-btn>
-                          </div>
-                        </v-row>
-                      </v-card-title>
-                    </v-img>
-                  </v-card>
-                </v-hover>
-              </v-col>
-            </template>
+            <v-col
+              v-for="(item, i) in assignment.files"
+              :key="i"
+              cols="12"
+              md="3"
+            >
+              <v-hover v-slot="{ hover }">
+                <v-card
+                  :elevation="hover ? 12 : 2"
+                  :class="{ 'on-hover': hover }"
+                >
+                  <thumbnail :file="item.file"></thumbnail>
+                </v-card>
+              </v-hover>
+            </v-col>
           </v-row>
           <v-row>
             <v-file-input
@@ -194,7 +184,9 @@
 
 <script>
 import api from "@/services/api";
+import Thumbnail from "../components/global/Thumbnail.vue";
 export default {
+  components: { Thumbnail },
   name: "Assignments",
 
   data: () => ({
@@ -253,8 +245,6 @@ export default {
           formData.append("attachments[]", this.newFiles[i]);
         }
       }
-
-      console.log(formData);
       return api
         .post("assignment_files/", formData, {
           headers: {
@@ -277,7 +267,6 @@ export default {
         class_id,
         name,
         description,
-
         end_date_time,
         mark,
       });

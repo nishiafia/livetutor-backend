@@ -46,10 +46,10 @@ export default {
         .then(() => dispatch("get"));
     },
     delete({ dispatch }, id) {
-      return api.delete("exams/" + id).then(() => dispatch("get"));
+      return api.delete(`exams/${id}/`).then(() => dispatch("get"));
     },
     submit({ commit }, payload) {
-      const {exam_id, exam_submission_files } = payload;
+      const { exam_id, exam_submission_files } = payload;
       let formData = new FormData();
       formData.append("exam_id", exam_id);
 

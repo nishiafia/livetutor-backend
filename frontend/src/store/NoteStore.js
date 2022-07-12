@@ -42,6 +42,9 @@ export default {
         })
         .then(() => dispatch("get"));
     },
+    delete({ dispatch }, id) {
+      return api.delete(`notes/${id}/`).then(() => dispatch("get"));
+    }
   },
 
   mutations: {

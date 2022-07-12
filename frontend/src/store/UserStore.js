@@ -76,5 +76,6 @@ export default {
     getRefreshToken: (state) => state.refresh,
     getUsername: (state) => state.username,
     userIsAuthenticated: (state) => state.authenticated,
+    getUserId: (state) => state.id,
   },
 };

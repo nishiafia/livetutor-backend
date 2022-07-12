@@ -55,7 +55,8 @@
                 lg="4"
                 md="6"
               >
-                <v-img
+                <Thumbnail :file="file.file"></Thumbnail>
+                <!-- <v-img
                   v-if="
                     file.file
                       .split('.')
@@ -77,7 +78,7 @@
                   <v-row justify="center" align="center" class="fill-height">
                     <h1>{{ file.file.split(".").pop() }}</h1>
                   </v-row>
-                </v-img>
+                </v-img> -->
               </v-col>
             </v-row>
 
@@ -144,8 +145,9 @@
 
 <script>
 import api from "@/services/api";
-
+import Thumbnail from "@/components/global/Thumbnail.vue";
 export default {
+  components: { Thumbnail },
   props: ["class_id"],
   // created() {
   //   this.$store.dispatch("assignments/get");

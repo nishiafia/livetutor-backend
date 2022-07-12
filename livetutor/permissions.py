@@ -52,10 +52,9 @@ class RoomAdminPermission(permissions.DjangoObjectPermissions):
             return super().has_permission(request, view)
 
     def has_object_permission(self, request, view, obj):
-        print(obj)
         if request.method in ['POST', 'PUT', 'DELETE', ]:
             try:
-                if Room.objects.filter(pk=obj.room, author=request.user, ).exists():
+                if Room.objects.filter(pk=obj.room.id, author=request.user, ).exists():
                     print('here in obj permission')
                     return True
             except:

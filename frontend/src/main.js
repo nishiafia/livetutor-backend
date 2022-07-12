@@ -19,7 +19,7 @@ Vue.prototype.$phoneRules = [
   (v) => !!v || "Phone is required",
   (v) => /^\d{11}$/.test(v) || "Phone must be 11 digits",
 ];
-
+Vue.prototype.$api = api;
 Vue.config.performance = true;
 
 new Vue({

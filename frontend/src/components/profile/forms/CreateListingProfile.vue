@@ -87,8 +87,21 @@ export default {
   created() {
     console.log("hhh");
     this.loadGrades();
+    this.getUserListingProfile();
   },
   methods: {
+    getUserListingProfile() {
+      this.$api.get(`/listing/self-listing/`).then((res) => {
+        this.grades = res.data.grades;
+        this.subjects = res.data.subjects;
+        this.video_link = res.data.video_link;
+        this.about = res.data.about;
+        this.price_monthly = res.data.price_monthly;
+        this.price_course = res.data.price_course;
+        this.availability = res.data.availability;
+        this.trial_time = res.data.trial_time;
+      });
+    },
     loadGrades() {
       this.$api.get("/grades/").then((res) => (this.grades_list = res.data));
     },
@@ -106,9 +119,7 @@ export default {
           availability: this.availability,
           trialTimeType: this.trialTimeType,
         })
-        .then((res) => {
-          console.log(res);
-        });
+        .then((res) => console.log(res));
     },
   },
 };

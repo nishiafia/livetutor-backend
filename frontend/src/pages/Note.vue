@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        <v-card class="p-4">
+      <v-col cols="12" md="6">
+        <v-card class="pa-4">
           <v-card-actions>
             <v-btn @click="deleteNote">Delete</v-btn>
             <v-spacer></v-spacer>
@@ -22,100 +22,76 @@
 
           <v-card> </v-card>
           <v-row class="fill-height" align="center" justify="center">
-            <template v-for="(file, i) in note.note_files">
-              <v-col :key="i" cols="12" md="4">
-                <v-hover v-slot="{ hover }">
-                  <v-card
-                    :elevation="hover ? 12 : 2"
-                    :class="{ 'on-hover': hover }"
-                  >
-                    <v-img :src="file.file_url" height="225px">
-                      <v-card-title class="text-h6 white--text">
-                        <v-row
-                          class="fill-height flex-column"
-                          justify="space-between"
-                        >
-                          <div class="align-self-center">
-                            <v-btn
-                              :color="transparent"
-                              :class="{ 'show-btns': hover }"
-                              icon
-                              @click="deleteFile(file)"
-                            >
-                              <v-icon> mdi-delete </v-icon>
-                            </v-btn>
-                          </div>
-                        </v-row>
-                      </v-card-title>
-                    </v-img>
-                  </v-card>
-                </v-hover>
-              </v-col>
-            </template>
+            <v-col :key="i" cols="4" v-for="(file, i) in note.note_files">
+              <v-hover v-slot="{ hover }">
+                <v-card
+                  :elevation="hover ? 12 : 2"
+                  :class="{ 'on-hover': hover }"
+                >
+                  <v-img :src="file.file_url" height="225px">
+                    <v-card-title class="text-h6 white--text">
+                      <v-row
+                        class="fill-height flex-column"
+                        justify="space-between"
+                      >
+                        <div class="align-self-center">
+                          <v-btn
+                            :color="transparent"
+                            :class="{ 'show-btns': hover }"
+                            icon
+                            @click="deleteFile(file)"
+                          >
+                            <v-icon> mdi-delete </v-icon>
+                          </v-btn>
+                        </div>
+                      </v-row>
+                    </v-card-title>
+                  </v-img>
+                </v-card>
+              </v-hover>
+            </v-col>
           </v-row>
         </v-card>
       </v-col>
-    </v-row>
-
-    <v-row
-      ><v-col
-        ><v-card class="p-4">
-          <v-card-title>Attachments</v-card-title>
-          <v-row class="fill-height" align="center" justify="center">
-            <template v-for="(file, i) in note.files">
-              <v-col :key="i" cols="12" md="4">
-                <v-hover v-slot="{ hover }">
-                  <v-card
-                    :elevation="hover ? 12 : 2"
-                    :class="{ 'on-hover': hover }"
-                  >
-                    <v-img :src="file.file_url" height="225px">
-                      <v-card-title class="text-h6 white--text">
-                        <v-row
-                          class="fill-height flex-column"
-                          justify="space-between"
-                        >
-                          <div class="align-self-center">
-                            <v-btn
-                              :color="transparent"
-                              :class="{ 'show-btns': hover }"
-                              icon
-                              @click="deleteFile(file)"
-                            >
-                              <v-icon> mdi-delete </v-icon>
-                            </v-btn>
-                          </div>
-                        </v-row>
-                      </v-card-title>
-                    </v-img>
-                  </v-card>
-                </v-hover>
-              </v-col>
-            </template>
+      <v-col cols="12" md="6"
+        ><v-card class="pa-4">
+          <v-card-title>
+            <span class="headline">
+              <v-icon>mdi-file-image-outline</v-icon>
+              <span>Files</span>
+            </span></v-card-title
+          >
+          <v-row justify="center">
+            <v-col cols="4" v-for="(item, i) in note.files" :key="i">
+              <v-hover v-slot="{ hover }">
+                <v-card
+                  :elevation="hover ? 12 : 2"
+                  :class="{ 'on-hover': hover }"
+                >
+                  <thumbnail :file="item.file"></thumbnail>
+                </v-card>
+              </v-hover>
+            </v-col>
           </v-row>
-          <v-row>
-            <v-file-input
-              multiple
-              chips
-              v-model="newFiles"
-              append-icon="mdi-check"
-              label="Add New Files"
-              @click:append="addFiles"
-            ></v-file-input>
-          </v-row> </v-card></v-col
-    ></v-row>
 
-    <!-- <v-card>
-      <v-file-input multiple chips v-model="newFiles"></v-file-input>
-    </v-card> -->
-
-    <!-- <v-btn color="primary" class="ma-2" @click="addFiles" outlined>Add</v-btn> -->
+          <v-file-input
+            multiple
+            chips
+            v-model="newFiles"
+            append-icon="mdi-check"
+            label="Add New Files"
+            @click:append="addFiles"
+          ></v-file-input> </v-card
+      ></v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import api from "@/services/api";
+import Thumbnail from "../components/global/Thumbnail.vue";
 export default {
+  components: { Thumbnail },
   name: "notes",
 
   data: () => ({

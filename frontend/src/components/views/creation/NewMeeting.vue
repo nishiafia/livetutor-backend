@@ -4,7 +4,9 @@
     <v-card-title>
       <span
         class="text-h5"
-        v-html="'Create New Schedule' + (this.class_id ? ' for ' + this.class_id : '')"
+        v-html="
+          'Create New Schedule' + (this.class_id ? ' for ' + this.class_id : '')
+        "
       ></span>
     </v-card-title>
     <v-card-subtitle>
@@ -12,7 +14,11 @@
     </v-card-subtitle>
     <v-row>
       <v-col>
-        <v-text-field v-model="name" label="Title" hide-details="auto"></v-text-field>
+        <v-text-field
+          v-model="name"
+          label="Title"
+          hide-details="auto"
+        ></v-text-field>
       </v-col>
 
       <v-col>
@@ -40,7 +46,10 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-text-field v-model="details" label="Short Description"></v-text-field>
+        <v-text-field
+          v-model="details"
+          label="Short Description"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row>
@@ -77,7 +86,9 @@
         >
           <v-spacer></v-spacer>
           <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(dates)"> OK </v-btn>
+          <v-btn text color="primary" @click="$refs.menu.save(dates)">
+            OK
+          </v-btn>
         </v-date-picker>
       </v-menu>
     </v-row>
@@ -152,13 +163,19 @@
 
     <v-card-actions v-if="!from_complete">
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text @click="$emit('closeDialog')"> Close </v-btn>
+      <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
+        Close
+      </v-btn>
       <v-btn color="blue darken-1" @click="save" text> Save </v-btn>
     </v-card-actions>
     <v-card-actions v-else-if="from_complete">
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text @click="$emit('skip_step')"> Skip </v-btn>
-      <v-btn color="blue darken-1" @click="save_for_completion" text> Continue </v-btn>
+      <v-btn color="blue darken-1" text @click="$emit('skip_step')">
+        Skip
+      </v-btn>
+      <v-btn color="blue darken-1" @click="save_for_completion" text>
+        Continue
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -176,7 +193,15 @@ function initialState() {
     menu2: false,
     menu3: false,
     selected_class: {},
-    colors: ["blue", "indigo", "deep-purple", "cyan", "green", "orange", "grey darken-1"],
+    colors: [
+      "blue",
+      "indigo",
+      "deep-purple",
+      "cyan",
+      "green",
+      "orange",
+      "grey darken-1",
+    ],
   };
 }
 export default {
@@ -193,7 +218,15 @@ export default {
       menu2: false,
       menu3: false,
       selected_class: {},
-      colors: ["blue", "indigo", "deep-purple", "cyan", "green", "orange", "grey darken-1"],
+      colors: [
+        "blue",
+        "indigo",
+        "deep-purple",
+        "cyan",
+        "green",
+        "orange",
+        "grey darken-1",
+      ],
     };
   },
   emits: ["closeDialog", "to_next_step"],
@@ -206,8 +239,8 @@ export default {
         start_date_time: `${date} ${this.start}`,
         end_date_time: `${date} ${this.end}`,
       }));
-
       this.$store.dispatch("meetings/add", { meetings });
+      this.$emit("closeDialog");
     },
     getSelectText(item) {
       return item.section;
@@ -221,7 +254,9 @@ export default {
     four_weeks_from_today() {
       const date = new Date();
       date.setDate(date.getDate() + 84);
-      return new Date(date - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10);
+      return new Date(date - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10);
     },
 
     today() {

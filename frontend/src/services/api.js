@@ -13,14 +13,20 @@ let config = {
   baseURL: base_url,
 };
 
-if (access_token) {
+function setToken(token) {
+  console.log('here');
   config.headers = {
-    Authorization: `Bearer ${access_token}`,
+    Authorization: `Bearer ${token}`,
   };
 }
+
+// if (access_token) {
+//   config.headers = {
+//     Authorization: `Bearer ${access_token}`,
+//   };
+// }
 
 const api = Axios.create(config);
 api.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 api.defaults.xsrfCookieName = "csrftoken";
-Vue.prototype.$api = api;
 export default api;

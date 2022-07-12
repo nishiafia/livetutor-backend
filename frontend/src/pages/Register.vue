@@ -27,14 +27,11 @@
 
             <v-btn type="submit" color="success" block>Continue</v-btn>
           </v-form>
-
-          <v-form v-if="otp_verified" @submit.prevent="register" ref="form2">
+          <v-form v-if="otp_verified" ref="form2" lazy-validation>
             <v-text-field
-              required
-              label="Full Name"
-              autocomplete="name"
-              :rules="$requiredRules"
               v-model="name"
+              label="Full Name"
+              :rules="$requiredRules"
             >
             </v-text-field>
 
@@ -44,13 +41,15 @@
               label="Address"
             ></v-text-field>
             <v-text-field
-              type="email"
               v-model="email"
+              type="email"
               label="Email"
               :rules="$requiredRules"
             ></v-text-field>
 
-            <v-btn type="submit" color="success" block>Create Account</v-btn>
+            <v-btn @click="register" color="success" block
+              >Create Account</v-btn
+            >
           </v-form>
         </v-card>
       </v-col>
@@ -99,11 +98,17 @@ export default {
           password: this.password,
         };
         axios
-          .post("/api/users/", data, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
+          .post(
+            process.env.NODE_ENV === "production"
+              ? "https://www.apps.livetutor.com.bd/api/users/"
+              : "http://localhost:8000/api/users/",
+            data,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
           .then(() =>
             this.$store.dispatch("user/login", {
               phone: this.mobile.replace("-", ""),

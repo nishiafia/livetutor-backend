@@ -2,7 +2,7 @@ from urllib import request
 
 from django.db.models import Q
 from django.shortcuts import render
-from rest_framework import response, status, viewsets
+from rest_framework import decorators, response, status, viewsets
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from .serializers import MeetingSerializer
@@ -41,3 +41,21 @@ class MeetingViewset(NestedViewSetMixin, viewsets.ModelViewSet):
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @decorators.action(detail=False, methods=['get'], url_path='get-meeting-list')
+    def get_listed_teacher_meetings(self, request):
+        """_summary_
+
+        Args:
+            request ():
+
+        Returns:
+            serializer : list of meetings
+        """
+        listed_teacher = request.GET.get('teacher')
+        if listed_teacher:
+            meetings = Meeting.objects.filter(
+                room__author__id=listed_teacher
+            )
+            serializer = self.get_serializer(meetings, many=True)
+            return response.Response(serializer.data)

@@ -1,156 +1,149 @@
 <template>
   <v-container>
     <v-row>
-      <v-card class="p-4">
-        <v-card-actions>
-          <v-btn @click="deleteExam">Delete</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn @click="updateExam(exam)">Save</v-btn>
-        </v-card-actions>
-        <v-text-field label="Title" v-model="exam.name"></v-text-field>
-        <v-text-field
-          label="Description"
-          v-model="exam.description"
-        ></v-text-field>
-        <v-text-field label="Mark" v-model="exam.mark"></v-text-field>
-
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :return-value.sync="exam.exam_date"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="exam.exam_date"
-              label="Date"
-              prepend-icon="mdi-calendar"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="exam.exam_date" no-title scrollable>
+      <v-col cols="12" md="6">
+        <v-card class="pa-4">
+          <v-card-actions>
+            <v-btn @click="deleteExam">Delete</v-btn>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-            <v-btn
-              text
-              color="primary"
-              @click="$refs.menu.save(exam.exam_date)"
-            >
-              OK
-            </v-btn>
-          </v-date-picker>
-        </v-menu>
-        <v-menu
-          ref="menu3"
-          v-model="menu3"
-          :nudge-right="40"
-          :return-value.sync="exam.start_time"
-          transition="scale-transition"
-          offset-y
-          :close-on-content-click="false"
-          max-width="290px"
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="exam.start_time"
-              label="Exam Start Time"
-              prepend-icon="mdi-clock-time-four-outline"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-time-picker v-if="menu3" v-model="exam.start_time" full-width>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-            <v-btn
-              text
-              color="primary"
-              @click="$refs.menu2.save(exam.start_time)"
-            >
-              OK
-            </v-btn></v-time-picker
+            <v-btn @click="updateExam(exam)">Save</v-btn>
+          </v-card-actions>
+          <v-text-field label="Title" v-model="exam.name"></v-text-field>
+          <v-text-field
+            label="Description"
+            v-model="exam.description"
+          ></v-text-field>
+          <v-text-field label="Mark" v-model="exam.mark"></v-text-field>
+          <v-menu
+            ref="menu"
+            v-model="menu"
+            :close-on-content-click="false"
+            :return-value.sync="exam.exam_date"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
           >
-        </v-menu>
-        <v-menu
-          ref="menu2"
-          v-model="menu2"
-          :nudge-right="40"
-          :return-value.sync="exam.end_time"
-          transition="scale-transition"
-          offset-y
-          :close-on-content-click="false"
-          max-width="290px"
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="exam.end_time"
-              label="Exam End Time"
-              prepend-icon="mdi-clock-time-four-outline"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-time-picker v-if="menu2" v-model="exam.end_time" full-width>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-            <v-btn
-              text
-              color="primary"
-              @click="$refs.menu2.save(exam.end_time)"
-            >
-              OK
-            </v-btn></v-time-picker
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="exam.exam_date"
+                label="Date"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="exam.exam_date" no-title scrollable>
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.menu.save(exam.exam_date)"
+              >
+                OK
+              </v-btn>
+            </v-date-picker>
+          </v-menu>
+          <v-menu
+            ref="menu3"
+            v-model="menu3"
+            :nudge-right="40"
+            :return-value.sync="exam.start_time"
+            transition="scale-transition"
+            offset-y
+            :close-on-content-click="false"
+            max-width="290px"
+            min-width="290px"
           >
-        </v-menu>
-      </v-card>
-    </v-row>
-    <v-row>
-      <v-card>
-        <v-row class="fill-height" align="center" justify="center">
-          <template v-for="(file, i) in exam.files">
-            <v-col :key="i" cols="12" md="4">
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="exam.start_time"
+                label="Exam Start Time"
+                prepend-icon="mdi-clock-time-four-outline"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-time-picker v-if="menu3" v-model="exam.start_time" full-width>
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.menu2.save(exam.start_time)"
+              >
+                OK
+              </v-btn></v-time-picker
+            >
+          </v-menu>
+          <v-menu
+            ref="menu2"
+            v-model="menu2"
+            :nudge-right="40"
+            :return-value.sync="exam.end_time"
+            transition="scale-transition"
+            offset-y
+            :close-on-content-click="false"
+            max-width="290px"
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="exam.end_time"
+                label="Exam End Time"
+                prepend-icon="mdi-clock-time-four-outline"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-time-picker v-if="menu2" v-model="exam.end_time" full-width>
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.menu2.save(exam.end_time)"
+              >
+                OK
+              </v-btn></v-time-picker
+            >
+          </v-menu>
+        </v-card></v-col
+      >
+      <v-col cols="12" md="6">
+        <v-card>
+          <v-card-title>
+            <span class="headline">
+              <v-icon>mdi-file-image-outline</v-icon>
+              <span>Files</span>
+            </span></v-card-title
+          >
+          <v-row class="fill-height" align="center" justify="center">
+            <v-col v-for="(item, i) in exam.files" :key="i" cols="4">
               <v-hover v-slot="{ hover }">
                 <v-card
                   :elevation="hover ? 12 : 2"
                   :class="{ 'on-hover': hover }"
                 >
-                  <v-img :src="file.file_url" height="225px">
-                    <v-card-title class="text-h6 white--text">
-                      <v-row
-                        class="fill-height flex-column"
-                        justify="space-between"
-                      >
-                        <div class="align-self-center">
-                          <v-btn
-                            :color="transparent"
-                            :class="{ 'show-btns': hover }"
-                            icon
-                            @click="deleteFile(file)"
-                          >
-                            <v-icon> mdi-delete </v-icon>
-                          </v-btn>
-                        </div>
-                      </v-row>
-                    </v-card-title>
-                  </v-img>
+                  <thumbnail :file="item.file"></thumbnail>
                 </v-card>
               </v-hover>
             </v-col>
-          </template>
-        </v-row>
-      </v-card>
+          </v-row>
+          <v-card-actions>
+            <v-file-input multiple chips v-model="newFiles"></v-file-input>
+            <v-btn color="primary" class="ma-2" @click="addFiles" outlined
+              >Add</v-btn
+            ></v-card-actions
+          >
+        </v-card></v-col
+      >
     </v-row>
-    <v-file-input multiple chips v-model="newFiles"></v-file-input>
-    <v-btn color="primary" class="ma-2" @click="addFiles" outlined>Add</v-btn>
+    <v-row> </v-row>
+
     <v-card class="mt-4">
       <v-data-table
         dense
@@ -177,7 +170,9 @@
 
 <script>
 import api from "@/services/api";
+import Thumbnail from "../components/global/Thumbnail.vue";
 export default {
+  components: { Thumbnail },
   name: "Exam",
 
   data: () => ({

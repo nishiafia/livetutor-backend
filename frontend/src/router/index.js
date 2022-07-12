@@ -25,7 +25,7 @@ let router = new Router({
 });
 router.beforeEach((to, from, next) => {
   if (!["Login", "Register"].includes(to.name) && !store.getters["user/userIsAuthenticated"])
-    next({ name: "Login" });
+    next({ name: "Login", query: { redirect: to.fullPath } });
   else next();
 });
 

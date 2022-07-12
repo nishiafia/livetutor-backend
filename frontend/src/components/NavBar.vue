@@ -32,7 +32,9 @@
       </div>
       <v-divider vertical class="mx-2"></v-divider>
       <div v-if="loggedIn">
-        <v-btn to="/profile" text>{{ $store.state.user.username || "Anon" }}</v-btn>
+        <v-btn to="/profile" text>{{
+          $store.state.user.username || "Anon"
+        }}</v-btn>
         <v-btn text to="/logout">Logout</v-btn>
       </div>
       <div v-else>

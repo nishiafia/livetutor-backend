@@ -44,10 +44,11 @@ export default {
         .then(() => dispatch("get"));
     },
     delete({ dispatch }, id) {
-      return api.delete("assignments/" + id).then(() => dispatch("get"));
+      return api.delete(`assignments/${id}`).then(() => dispatch("get"));
+
     },
     submit({ commit }, payload) {
-      const {assignment_id, assignment_submission_files} = payload
+      const { assignment_id, assignment_submission_files } = payload
       let formData = new FormData();
       formData.append('assignment_id', assignment_id)
       for (let i = 0; i < assignment_submission_files.length; i++) {

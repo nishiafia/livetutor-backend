@@ -10,7 +10,6 @@
           large
           persistent
           @save="save(props.item)"
-
         >
           <div>{{ props.item.name }}</div>
           <template v-slot:input>
@@ -31,7 +30,6 @@
           large
           persistent
           @save="save(props.item)"
-
         >
           <div>{{ props.item.description }}</div>
           <template v-slot:input>
@@ -52,7 +50,6 @@
           large
           persistent
           @save="save(props.item)"
-
         >
           <div>{{ props.item.meeting_date }}</div>
           <template v-slot:input>
@@ -71,7 +68,6 @@
           large
           persistent
           @save="save(props.item)"
-
         >
           <div>{{ props.item.start_time }}</div>
           <template v-slot:input>
@@ -89,7 +85,6 @@
           large
           persistent
           @save="save(props.item)"
-
         >
           <div>{{ props.item.end_time }}</div>
           <template v-slot:input>
@@ -101,12 +96,9 @@
         </v-edit-dialog>
       </template>
       <template v-slot:item.actions="{ item }">
-
-            <v-btn icon @click="deleteItem(item)">
-              <v-icon small>mdi-delete</v-icon>
-            </v-btn>
-
-
+        <v-btn icon @click="deleteItem(item)">
+          <v-icon small>mdi-delete</v-icon>
+        </v-btn>
       </template>
     </v-data-table>
   </v-card>

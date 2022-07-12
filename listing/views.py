@@ -10,34 +10,33 @@ from .serializers import TeacherListingSerializer, TeacherListPricingSerializer
 
 
 class TeacherListPricingView(views.APIView):
-   
-    
 
     def get(self, request, format=None):
-        
+
         return response.Response({'price_min': 40, ' price_max': 50})
         # queryset = TeacherListing.objects.aggregate(
         #     price_min=Min('price_from'), price_max=Max('price_from'))
         # return response.Response(queryset)
 
-#TODO: ORDERING
+# TODO: ORDERING
 # PRIORITY: STARRED/PREMIUM TEACHER
 # ADD ICON FOR STARRED/PREMIUM TEACHER
 # PRIORITY: RECENTLY CREATED (DEFAULT)
 
 
 class TeacherListingViewset(viewsets.ModelViewSet):
-    
+
     pagination_class = StandardResultsSetPagination
     queryset = TeacherListing.objects.filter(verified=True, active=True)
     serializer_class = TeacherListingSerializer
     filter_backends = [DjangoFilterBackend]
- 
+
     def get_queryset(self):
-        filters={}
+        filters = {}
         for i in self.request.query_params:
-            if i.replace('[]','') not in filters:
-                    filters[i.replace('[]','')] = self.request.query_params.getlist(i) 
+            if i.replace('[]', '') not in filters:
+                filters[i.replace('[]', '')
+                        ] = self.request.query_params.getlist(i)
         return self.queryset.filter(**filters).distinct()
 
     def create(self, request, *args, **kwargs):
@@ -47,4 +46,12 @@ class TeacherListingViewset(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return response.Response(serializer.data)
-        # return super().create(request, *args, **kwargs)
+
+    @decorators.action(detail=False, methods=['get'], url_path='self-listing')
+    def get_self_listing(self, request, *args, **kwargs):
+        user_id = request.user.id
+        queryset = self.get_queryset().filter(user=user_id)
+        if queryset.exists():
+            listing_profile = queryset.first()
+            serializer = self.get_serializer(listing_profile)
+            return response.Response(serializer.data)

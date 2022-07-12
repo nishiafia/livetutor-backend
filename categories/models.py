@@ -20,7 +20,7 @@ class Category(MetaFields):
         return self.title
 
 
-class Subject(models.Model):
+class Subject(MetaFields):
     category = models.ForeignKey(
         Category, related_name='subjects', on_delete=models.PROTECT)
     title = models.CharField(max_length=40)
@@ -30,7 +30,7 @@ class Subject(models.Model):
         return self.title
 
 
-class Grade(models.Model):
+class Grade(MetaFields):
     title = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
 
