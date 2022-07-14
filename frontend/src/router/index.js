@@ -24,9 +24,12 @@ let router = new Router({
   routes: configRoutes(),
 });
 router.beforeEach((to, from, next) => {
-  if (!["Login", "Register"].includes(to.name) && !store.getters["user/userIsAuthenticated"])
-    next({ name: "Login", query: { redirect: to.fullPath } });
-  else next();
+
+  store.dispatch('user/validate').then(() => {
+    if (!["Login", "Register"].includes(to.name) && !store.getters["user/userIsAuthenticated"])
+      next({ name: "Login", query: { redirect: to.fullPath } });
+    else next()
+  });
 });
 
 export default router;

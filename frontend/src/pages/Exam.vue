@@ -184,7 +184,7 @@ export default {
     headers: [
       {
         text: "Submitted By",
-        value: "submitted_by.name",
+        value: "room_user.name",
       },
       {
         text: "Submitted At",
@@ -205,7 +205,7 @@ export default {
   created() {
     api
       .get(
-        "exam_submissions/" + this.$route.params.id
+        `exams/${this.$route.params.id}/submissions/`
         // params: { id: this.$route.params.id },
       )
       .then(

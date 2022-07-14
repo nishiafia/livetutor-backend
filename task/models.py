@@ -32,6 +32,10 @@ class Note(Task):
 # TODO: directory save for user
 
 
+class Link(Task):
+    url = models.URLField()
+
+
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'user_{0}/{1}'.format('usr', filename)
@@ -69,8 +73,6 @@ class NoteFile(TaskFile):
 class TaskSubmission(MetaFields):
     room_user = models.ForeignKey(
         RoomUser, on_delete=models.CASCADE)
-    # mark = models.DecimalField(
-    #     max_digits=5, decimal_places=2, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -79,15 +81,19 @@ class TaskSubmission(MetaFields):
 class AssignmentSubmission(TaskSubmission):
     assignment = models.ForeignKey(
         Assignment, on_delete=models.CASCADE, related_name='assignment_submissions')
+
     class Meta:
-        unique_together= ('room_user', 'assignment')
+        unique_together = ('room_user', 'assignment')
+
 
 class ExamSubmission(TaskSubmission):
     exam = models.ForeignKey(
         Exam, on_delete=models.CASCADE, related_name='exam_submissions')
 
     class Meta:
-        unique_together= ('room_user', 'exam')
+        unique_together = ('room_user', 'exam')
+
+
 class TaskSubmissionFile(MetaFields):
     file = models.FileField(upload_to='task_submission_files')
 

@@ -5,6 +5,7 @@ from .views.assignment_views import (AssignmentCommentViewset,
                                      AssignmentViewset)
 from .views.exam_views import (ExamCommentViewset, ExamSubmissionViewset,
                                ExamViewset)
+from .views.link_views import LinkViewSet
 from .views.note_views import NoteCommentViewset, NoteViewset
 
 router = ExtendedSimpleRouter()
@@ -28,4 +29,5 @@ note_routes.register('comments', NoteCommentViewset,
                      basename='note-comment', parents_query_lookups=['note_id'])
 
 router.register('notes', NoteViewset, basename='notes')
+router.register('links', LinkViewSet, basename='links')
 urlpatterns = router.urls

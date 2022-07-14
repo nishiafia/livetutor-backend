@@ -14,7 +14,6 @@ let config = {
 };
 
 function setToken(token) {
-  console.log('here');
   config.headers = {
     Authorization: `Bearer ${token}`,
   };

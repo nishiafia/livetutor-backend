@@ -13,10 +13,10 @@ from task.serializers.exam_serializers import *
 
 class ExamViewset(NestedViewSetMixin, ModelViewSet):
     parser_classes = (parsers.MultiPartParser, parsers.FormParser)
-    permission_classes = [RoomAdminPermission]
+    # permission_classes = [RoomAdminPermission]
     queryset = Exam.objects.all()
     serializer_class = ExamSerializer
-    
+
     def create(self, request, *args, **kwargs):
         exam_files = [{'file': file}
                       for file in request.data.getlist('attachments[]')]
@@ -56,12 +56,15 @@ class ExamCommentViewset(NestedViewSetMixin, ModelViewSet):
             print(serializer.errors)
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ExamSubmissionViewset(NestedViewSetMixin,ModelViewSet):
+
+class ExamSubmissionViewset(NestedViewSetMixin, ModelViewSet):
     serializer_class = ExamSubmissionSerializer
     queryset = ExamSubmission.objects.all()
+
     def create(self, request, *args, **kwargs):
-        
-        files = [{'file': file} for file in request.data.pop('exam_submission_files[]')]
+
+        files = [{'file': file}
+                 for file in request.data.pop('exam_submission_files[]')]
         print(files)
         data = {
             'exam': request.data.get('exam_id'),
