@@ -8,6 +8,7 @@
             <v-card-subtitle class="text-muted"
               >Sign In to your account</v-card-subtitle
             >
+            <!-- <PhoneField></PhoneField> -->
             <vue-tel-input-vuetify
               v-model="mobile"
               :rules="$phoneRules"
@@ -58,9 +59,12 @@
 </template>
 
 <script>
+import PhoneField from "@/components/global/PhoneField.vue";
 export default {
   name: "Login",
-
+  components: {
+    PhoneField,
+  },
   data() {
     return {
       form: "",

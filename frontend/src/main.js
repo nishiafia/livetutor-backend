@@ -17,7 +17,7 @@ Vue.use(VueTelInputVuetify, {
 Vue.prototype.$requiredRules = [(v) => !!v || "This Field is Required"];
 Vue.prototype.$phoneRules = [
   (v) => !!v || "Phone is required",
-  (v) => /^\d{11}$/.test(v) || "Phone must be 11 digits",
+  //(v) => /^\d{11}$/.test(v) || "Phone must be 11 digits",
 ];
 Vue.prototype.$api = api;
 Vue.config.performance = true;

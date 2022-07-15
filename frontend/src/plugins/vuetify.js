@@ -4,6 +4,16 @@ import "vuetify/dist/vuetify.min.css";
 Vue.use(Vuetify);
 
 export default new Vuetify({
+  icons: {
+    iconfont: "mdi",
+    values: {
+      "flagBD":
+      {
+        component: () => import("@/icons/flags/FlagBD.vue"),
+      }
+    },
+  },
+
   theme: {
     themes: {
       light: {
