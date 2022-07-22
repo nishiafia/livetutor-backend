@@ -3,9 +3,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from livetutor.models import MetaFields
+from locations.models import City, Country, District, Division, PoliceStation
 
 
-class User(AbstractUser,MetaFields):
+class User(AbstractUser):
     # first_name = None  # removing first name
     # last_name = None  # removing last name
     photo = models.ImageField(upload_to='users/', blank=True, null=True)
@@ -14,13 +15,9 @@ class User(AbstractUser,MetaFields):
     username = models.CharField(null=True, blank=True, max_length=20)
     phone = models.CharField(max_length=20, unique=True)
     address = models.CharField(max_length=255, null=True, blank=True)
-    city = models.ForeignKey(
-        'users.city', max_length=255, null=True, blank=True, on_delete=models.CASCADE)
     USERNAME_FIELD = 'phone'
 
     REQUIRED_FIELDS = ['username', 'email']
 
     def __str__(self):
         return f'{self.email}'
-
-
