@@ -1,5 +1,6 @@
 from django.db import models
-from users.models import District, Division, MetaFields, PoliceStation, User
+from livetutor.models import MetaFields
+from users.models import User
 
 AVAILABILITY_OPTIONS = (('online', 'Online'),
                         ('offline', 'Offline'), ('both', 'Both'))

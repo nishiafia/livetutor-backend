@@ -9,12 +9,13 @@
             @submit.prevent="check_mobile"
             method="POST"
           >
-            <vue-tel-input-vuetify
+            <PhoneField v-model="mobile" :rules="$requiredRules"></PhoneField>
+            <!-- <vue-tel-input-vuetify
               v-model="mobile"
               :rules="$phoneRules"
               counter="11"
               type="tel"
-            ></vue-tel-input-vuetify>
+            ></vue-tel-input-vuetify> -->
             <v-alert type="info" class="d-flex align-items-center">
               Please save the below pin code for your login
             </v-alert>
@@ -62,8 +63,9 @@ import api from "@/services/api";
 import axios from "axios";
 import Individual from "../components/register/Individual.vue";
 import Institution from "../components/register/Institution.vue";
+import PhoneField from "../components/global/PhoneField.vue";
 export default {
-  components: { Individual, Institution },
+  components: { Individual, Institution, PhoneField },
   name: "Register",
   data() {
     return {

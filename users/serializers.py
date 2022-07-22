@@ -2,14 +2,14 @@ from django.contrib.auth.models import Group, Permission
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from .models import City, User
+from .models import User
 
 
-class UserSerializer(serializers.ModelSerializer):  
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'name',
-                  'photo', 'phone', 'address', 'city', 'password',]
+                  'photo', 'phone', 'address', 'city', 'password', ]
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -20,18 +20,11 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-    
 
 class LoggedInUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = 'auth.User'
         fields = ['email']
-
-
-class CitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = City
-        fields = ['id', 'name']
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

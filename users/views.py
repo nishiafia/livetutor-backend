@@ -5,7 +5,7 @@ from rest_framework import status, views, viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.decorators import action
 from users.models import User
-from .serializers import City, CitySerializer, UserSerializer, CustomTokenObtainPairSerializer
+from .serializers import UserSerializer, CustomTokenObtainPairSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -37,10 +37,3 @@ class LoggedInUserView(APIView):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
-
-
-class CityView(views.APIView):
-    def get(self, request):
-        city = City.objects.all()
-        serializer = CitySerializer(city, many=True)
-        return Response(serializer.data)

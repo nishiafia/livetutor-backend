@@ -36,6 +36,7 @@ urlpatterns += [
     path('api/', include('payment.urls')),
     path('api/', include('categories.urls')),
     path('api/', include('listing.urls')),
-path('api/', include('booking.urls')),
+    path('api/', include('booking.urls')),
+    path('api/locations/', include('locations.urls')),
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ]

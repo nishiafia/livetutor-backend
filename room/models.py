@@ -1,7 +1,8 @@
 
 from django.db import models
 from django.utils import crypto
-from users.models import MetaFields, User
+from livetutor.models import MetaFields
+from users.models import User
 
 
 class RoomManager(models.Manager):

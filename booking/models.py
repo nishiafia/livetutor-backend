@@ -1,6 +1,7 @@
 from django.db import models
 from listing.models import TeacherListing
-from users.models import District, Division, MetaFields, PoliceStation, User
+from locations.models import City, Country, District, Division, PoliceStation
+from users.models import MetaFields, User
 
 
 # Create your models here.

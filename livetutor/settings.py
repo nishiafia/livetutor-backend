@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     'meeting',
     'listing',
     'categories',
-   
-    'booking'
+    'locations',
+    'booking',
 
 ]
 

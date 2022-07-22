@@ -1,6 +1,7 @@
 from django.db import models
+from livetutor.models import MetaFields
 from room.models import RoomUser
-from users.models import MetaFields, User
+from users.models import User
 
 # Create your models here.
 

@@ -1,20 +1,20 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-      <v-col cols="12" md="5">
+      <v-col cols="12" md="4">
         <v-card elevation="2" class="pa-4" min-height="320">
           <v-form @submit.prevent="login" ref="form">
             <v-card-title>Login</v-card-title>
             <v-card-subtitle class="text-muted"
               >Sign In to your account</v-card-subtitle
             >
-            <!-- <PhoneField></PhoneField> -->
-            <vue-tel-input-vuetify
+            <PhoneField v-model="mobile"></PhoneField>
+            <!-- <vue-tel-input-vuetify
               v-model="mobile"
               :rules="$phoneRules"
               counter="11"
               type="tel"
-            ></vue-tel-input-vuetify>
+            ></vue-tel-input-vuetify> -->
             <v-text-field
               :rules="$requiredRules"
               v-model="password"
@@ -36,7 +36,7 @@
           </v-form>
         </v-card>
       </v-col>
-      <v-col cols="12" md="5">
+      <v-col cols="12" md="4">
         <v-card
           dark
           elevation="2"

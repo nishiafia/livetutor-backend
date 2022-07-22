@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import MetaFields
+from livetutor.models import MetaFields
 
 
 # Create your models here.
