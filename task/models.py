@@ -144,7 +144,7 @@ class NoteComment(TaskComment):
 
 class AssignmentSubmissionMark(MetaFields):
     assignment_submission = models.OneToOneField(
-        AssignmentSubmission, on_delete=models.CASCADE)
+        AssignmentSubmission, on_delete=models.CASCADE, related_name='submission')
     mark = models.DecimalField(max_digits=5, decimal_places=2)
 
 

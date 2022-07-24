@@ -227,8 +227,11 @@ export default {
         });
     },
     updateMark(event, { id }) {
-      api
-        .put("assignment_submissions/", { mark: event, id: id })
+      this.$api
+        .put(`assignments/${this.$route.params.id}/submissions/update-mark/`, {
+          mark: event,
+          assignment_submission_id: id,
+        })
         .then((r) => console.log(r));
     },
     deleteFile({ id, assignment_id }) {

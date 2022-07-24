@@ -1,23 +1,40 @@
 <template>
   <v-container>
     <v-row>
-      <v-col> <user-menu></user-menu></v-col>
-    </v-row>
-    <v-row
-      ><v-col><schedules></schedules></v-col
-    ></v-row>
-    <!-- <v-row class="p-2"><user-card></user-card> </v-row> -->
-    <v-row class="mt-4">
-      <v-col>
+      <v-col cols="8">
+        <schedules></schedules>
+      </v-col>
+      <v-col cols="4">
+        <v-row>
+          <v-col>
+            <user-menu></user-menu>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col>
             <upcoming-meetings></upcoming-meetings>
           </v-col>
         </v-row>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <RoomList></RoomList>
+      </v-col>
+    </v-row>
+
+    <!-- <v-row>
+      <v-col> </v-col>
+    </v-row>
+    <v-row><v-col></v-col></v-row> -->
+    <!-- <v-row class="p-2"><user-card></user-card> </v-row> -->
+    <!-- <v-row class="mt-4">
+      <v-col>
         <v-row>
-          <v-col>
-            <RoomList></RoomList>
-          </v-col>
+          <v-col> </v-col>
+        </v-row>
+        <v-row>
+          <v-col> </v-col>
         </v-row>
       </v-col>
 
@@ -28,7 +45,7 @@
           </v-col>
         </v-row>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 

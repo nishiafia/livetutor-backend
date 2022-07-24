@@ -3,18 +3,21 @@
     <v-row class="d-flex-inline">
       <v-col cols="12" md="3">
         <v-select
-          :items="countryList"
+          :items="countries"
           v-model="countryCode"
-          item-value="phoneCode"
+          item-value="phone_code"
           :rule="requiredRules"
         >
           <template #item="{ item }">
-            <v-icon class="mx-2"> {{ item.icon }} </v-icon
-            ><span class="mx-2"> {{ item.text }} </span>
+            <v-img width="32" height="16" v-html="item.flag"></v-img>
+            <span class="mx-2"> {{ item.name }} </span>
           </template>
           <template #selection="{ item }">
-            <v-icon class="mx-2"> {{ item.icon }} </v-icon
-            ><span class="mx-2"> {{ item.phoneCode }} </span>
+            <v-img v-html="item.flag"></v-img>
+
+            <!-- <v-icon class="mx-2"> {{ item.icon }} </v-icon
+            > -->
+            <span class="mx-2"> {{ item.phone_code }} </span>
           </template>
         </v-select>
       </v-col>
@@ -31,27 +34,11 @@ export default {
       phoneFieldForm: "",
       countryCode: "",
       requiredRules: [(v) => !!v || "This Field is Required"],
-      countries: [
-        {
-          text: "Bangladesh",
-          value: "bd",
-          phoneCode: "+88",
-          icon: "flagBD",
-          maxDigit: 11,
-        },
-      ],
+      countries: [],
     };
   },
-  computed: {
-    countryList() {
-      return this.countries.map((country) => {
-        return {
-          ...country,
-          icon: `$vuetify.icons.${country.icon}`,
-        };
-      });
-    },
 
+  computed: {
     phoneRules() {
       return [
         (v) => !!v || "Phone is required",
@@ -59,7 +46,15 @@ export default {
       ];
     },
   },
+  created() {
+    this.loadCountries();
+  },
   methods: {
+    loadCountries() {
+      this.$api.get("/locations/countries/").then((res) => {
+        this.countries = res.data;
+      });
+    },
     handleInput(e) {
       this.$emit("input", `${this.countryCode}${e}`);
     },

@@ -11,12 +11,10 @@ from .views.note_views import NoteCommentViewset, NoteViewset
 router = ExtendedSimpleRouter()
 assignment_routes = router.register(
     'assignments', AssignmentViewset, basename='assignment')
-
 assignment_routes.register('submissions', AssignmentSubmissionViewset,
                            basename='assignment-submission', parents_query_lookups=['assignment_id'])
 assignment_routes.register('comments', AssignmentCommentViewset,
                            basename='assignment-comment', parents_query_lookups=['assignment_id'])
-
 exam_routes = router.register(
     'exams', ExamViewset, basename='exams')
 exam_routes.register('submissions', ExamSubmissionViewset,

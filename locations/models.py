@@ -6,8 +6,9 @@ from livetutor.models import MetaFields
 
 
 class Country(MetaFields):
-    country = models.CharField(max_length=100)
-    flag = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=100)
+    flag = models.TextField(
+        null=True, blank=True, help_text='https://github.com/lipis/flag-icons/tree/main/flags/4x3')
     short_code = models.CharField(
         max_length=5, null=True, blank=True, help_text='BD, US, IN, etc.')
     phone_code = models.CharField(max_length=10)
@@ -15,7 +16,7 @@ class Country(MetaFields):
     max_digit = models.IntegerField()
 
     def __str__(self):
-        return self.country
+        return self.name
 
 
 class City(MetaFields):

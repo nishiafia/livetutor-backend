@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from livetutor.permissions import RoomAdminPermission
-from rest_framework import parsers, response, status
+from rest_framework import decorators, parsers, response, status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
 from task.models import *
@@ -12,7 +12,8 @@ from task.serializers.exam_serializers import *
 
 
 class ExamViewset(NestedViewSetMixin, ModelViewSet):
-    parser_classes = (parsers.MultiPartParser, parsers.FormParser)
+    parser_classes = (parsers.MultiPartParser,
+                      parsers.FormParser, parsers.JSONParser)
     # permission_classes = [RoomAdminPermission]
     queryset = Exam.objects.all()
     serializer_class = ExamSerializer
@@ -36,6 +37,16 @@ class ExamViewset(NestedViewSetMixin, ModelViewSet):
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @decorators.action(detail=False, methods=['put'], url_name='update_exam_mark', url_path='update-mark', )
+    def update_mark(self, request, **kwargs):
+        exam_submission, created = ExamSubmissionMark.objects.get_or_create(
+            exam_submission__id=request.data.get(
+                'exam_submission_id'),
+        )
+        exam_submission.mark = request.data.get('mark')
+        exam_submission.save()
+        return response.Response(status=status.HTTP_200_OK)
 
 
 class ExamCommentViewset(NestedViewSetMixin, ModelViewSet):
