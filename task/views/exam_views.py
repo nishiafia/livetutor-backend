@@ -38,16 +38,6 @@ class ExamViewset(NestedViewSetMixin, ModelViewSet):
         else:
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @decorators.action(detail=False, methods=['put'], url_name='update_exam_mark', url_path='update-mark', )
-    def update_mark(self, request, **kwargs):
-        exam_submission, created = ExamSubmissionMark.objects.get_or_create(
-            exam_submission__id=request.data.get(
-                'exam_submission_id'),
-        )
-        exam_submission.mark = request.data.get('mark')
-        exam_submission.save()
-        return response.Response(status=status.HTTP_200_OK)
-
 
 class ExamCommentViewset(NestedViewSetMixin, ModelViewSet):
     serializer_class = ExamCommentSerializer
@@ -88,3 +78,13 @@ class ExamSubmissionViewset(NestedViewSetMixin, ModelViewSet):
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @decorators.action(detail=False, methods=['put'], url_name='update_exam_mark', url_path='update-mark', )
+    def update_mark(self, request, **kwargs):
+        exam_submission, created = ExamSubmissionMark.objects.get_or_create(
+            exam_submission_id=request.data.get(
+                'exam_submission_id'),
+        )
+        exam_submission.mark = request.data.get('mark')
+        exam_submission.save()
+        return response.Response(status=status.HTTP_200_OK)

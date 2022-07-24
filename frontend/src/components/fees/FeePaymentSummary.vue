@@ -151,7 +151,7 @@ export default {
       ],
     };
   },
-  created() {
+  mounted() {
     this.loadFeeSummary();
   },
   methods: {
@@ -167,7 +167,6 @@ export default {
               };
             }
             res[value.room_user].payments.push(value);
-
             return res;
           }, []);
           this.payments = result;
