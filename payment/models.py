@@ -1,6 +1,6 @@
 from django.db import models
-from room.models import RoomUser
 from livetutor.models import MetaFields
+from room.models import RoomUser
 
 MONTHS = [('1', 'January'), ('2', 'February'), ('3', 'March'), ('4', 'April'), ('5', 'May'), ('6', 'June'),
           ('7', 'July'), ('8', 'August'), ('9', 'September'), ('10', 'October'), ('11', 'November'), ('12', 'December')]
@@ -42,8 +42,10 @@ class RoomFee(MetaFields):
 class RoomUserFee(MetaFields):
     """Fees Applied to a room user
     """
-    room_user = models.ForeignKey(RoomUser, on_delete=models.CASCADE)
-    room_fee = models.ForeignKey(RoomFee, on_delete=models.CASCADE)
+    room_user = models.ForeignKey(
+        RoomUser, on_delete=models.CASCADE, related_name='room_user_fees')
+    room_fee = models.ForeignKey(
+        RoomFee, on_delete=models.CASCADE, related_name='room_user_fees')
 
     class Meta:
         unique_together = ['room_user', 'room_fee']
@@ -59,7 +61,7 @@ class Payment(MetaFields):
     amount = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True)
     room_user_fee = models.ManyToManyField(
-        RoomUserFee, blank=False, related_name='payment', through='payment.RoomFeePayment')
+        RoomUserFee, blank=False, related_name='payments', through='payment.RoomFeePayment')
 
 
 class RoomFeePayment(MetaFields):

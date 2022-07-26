@@ -49,7 +49,9 @@
         <span v-if="item.payments.June"> {{ item.payments.June.paid }}</span>
       </template>
       <template v-slot:item.July="{ item }">
-        <span v-if="item.payments.July"> {{ item.payments.July.paid }} </span>
+        <span v-if="item.payments.July">
+          {{ item.payments.July.paid }} / {{ item.payments.July.total }}</span
+        >
       </template>
       <template v-slot:item.August="{ item }">
         <span v-if="item.payments.August">
@@ -63,19 +65,19 @@
       </template>
       <template v-slot:item.October="{ item }">
         <span v-if="item.payments.October">
-          {{ item.payments.October.paid }}
+          {{ item.payments.October.paid }} / {{ item.payments.October.total }}
         </span>
       </template>
       <template v-slot:item.November="{ item }">
         <v-tooltip></v-tooltip>
         <span v-if="item.payments.November">
-          {{ item.payments.November.paid }}
+          {{ item.payments.November.paid }} / {{ item.payments.November.total }}
         </span>
       </template>
 
       <template v-slot:item.December="{ item }">
         <span v-if="item.payments.December">
-          {{ item.payments.December.paid }}
+          {{ item.payments.December.paid }}/{{ item.payments.December.total }}
         </span>
       </template>
     </v-data-table>
@@ -159,39 +161,29 @@ export default {
       this.$api
         .get(`/rooms/${this.$route.params.id}/payment-summary/`)
         .then((response) => {
-          const result = response.data.reduce((res, value) => {
-            if (!res[value.room_user]) {
-              res[value.room_user] = {
-                user: value.room_user,
-                payments: [],
-              };
-            }
-            res[value.room_user].payments.push(value);
-            return res;
-          }, []);
-          this.payments = result;
+          this.payments = response.data;
         });
     },
   },
   computed: {
     summary() {
       const summary = this.payments.map((r) => ({
-        user: r.user,
-        payments: r.payments.reduce((res, value) => {
-          if (!res[value.month]) {
-            res[value.month] = {
-              month: value.month,
+        user: r.id,
+        payments: r.room_user_fees.reduce((acc, fee) => {
+          if (!acc[fee.month]) {
+            acc[fee.month] = {
               paid: 0,
               total: 0,
             };
           }
-          res[value.month].paid += value.payment_amount;
-          res[value.month].total += value.amount;
-          return res;
+          if (fee.room_fee_payment !== null) {
+            acc[fee.month].paid += fee.payment_amount;
+          }
+          acc[fee.month].total += fee.amount;
+          return acc;
         }, {}),
       }));
-
-      return summary.filter((s) => s !== undefined);
+      return summary;
     },
   },
 };

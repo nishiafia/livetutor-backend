@@ -1,3 +1,4 @@
+from ast import Try
 from calendar import month
 from dataclasses import field
 
@@ -15,8 +16,8 @@ class FeeSerializer(serializers.ModelSerializer):
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    room_user_fee = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=RoomUserFee.objects.all())
+    room_user_fee = serializers.PrimaryKeyRelatedField(many=True,
+                                                       queryset=RoomUserFee.objects.all())
 
     class Meta:
         model = Payment
@@ -76,3 +77,16 @@ class RoomFeeSerializer(serializers.ModelSerializer):
         for user in room_user:
             room_fee.room_user.add(user)
         return room_fee
+
+
+class PerUserPaymentSerializer(serializers.ModelSerializer):
+    room_user_fees = RoomUserFeeSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = RoomUser
+        fields = ['id', 'room', 'room_user_fees']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        print(instance.room_user_fees.values('payments'))
+        return data

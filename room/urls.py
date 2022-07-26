@@ -19,7 +19,7 @@ room_routes.register(r'payments', PaymentViewset,
                      basename='room-fee-payments', parents_query_lookups=['room_fee__room'])
 
 room_routes.register(r'payment-summary', SummaryViewset,
-                     basename='payment-summary', parents_query_lookups=['room_fee__room'])
+                     basename='payment-summary', parents_query_lookups=['room'])
 router.register('categories', CategoryViewset, basename='categories')
 
 urlpatterns = router.urls

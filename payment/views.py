@@ -12,7 +12,7 @@ class RoomUserFeeViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = RoomUserFeeSerializer
 
     def get_queryset(self):
-        return super().get_queryset().filter(Q(room_user__user=self.request.user) & Q(payment=None))
+        return super().get_queryset().filter(Q(room_user__user=self.request.user) & Q(payments__isnull=True))
 
 
 class RoomFeeViewset(NestedViewSetMixin, viewsets.ModelViewSet):
@@ -36,12 +36,12 @@ class RoomFeeViewset(NestedViewSetMixin, viewsets.ModelViewSet):
 
 
 class SummaryViewset(NestedViewSetMixin, viewsets.ModelViewSet):
-    serializer_class = RoomUserFeeSerializer
-    queryset = RoomUserFee.objects.all()
-
-    def get_queryset(self):
-        return super().get_queryset().filter(
-            room_fee__room__author=self.request.user)
+    serializer_class = PerUserPaymentSerializer
+    queryset = RoomUser.objects.all()
+    # TODO: add filter for user
+    # def get_queryset(self):
+    #     return super().get_queryset().filter(
+    #         room_fee__room__author=self.request.user)
 
 
 class PaymentViewset(NestedViewSetMixin, viewsets.ModelViewSet):
@@ -52,17 +52,3 @@ class PaymentViewset(NestedViewSetMixin, viewsets.ModelViewSet):
 
     def get_queryset(self):
         return super().get_queryset().filter(room_user_fee__room_user__user=self.request.user).distinct()
-
-    # def create(self, request, *args, **kwargs):
-    #     data = {'room_fee': request.data['room_fees'],
-    #             'user': request.user.id,
-    #             'amount': request.data['amount']
-    #             }
-    #     serializer = self.get_serializer(
-    #         data=data)
-    #     if serializer.is_valid():
-
-    #         serializer.save()
-    #         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     else:
-    #         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
