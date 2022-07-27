@@ -42,10 +42,6 @@
 
             <v-card-text>{{ activity.description }}</v-card-text>
 
-            <!-- <v-card-text
-              v-if="activity.type == 'assignment' || 'exam'"
-              v-html="activity.mark"
-            ></v-card-text> -->
             <v-row class="pa-4" justify="center">
               <v-col
                 v-for="file in activity.files"
@@ -139,6 +135,9 @@
             </v-list-group> </v-card
         ></v-col>
       </v-row>
+    </v-timeline-item>
+    <v-timeline-item v-if="activities.length === 0" color="red lighten-3">
+      <v-card-text>No activities yet</v-card-text>
     </v-timeline-item>
   </v-timeline>
 </template>

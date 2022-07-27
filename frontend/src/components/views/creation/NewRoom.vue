@@ -2,7 +2,6 @@
   <v-card>
     <v-form ref="form">
       <v-card-title>Create a Room</v-card-title>
-
       <!-- <v-card> -->
       <v-card-text>
         <v-row>

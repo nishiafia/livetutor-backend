@@ -1,19 +1,21 @@
 <template>
-  <v-card class="pa-4">
-    <v-card-title>
-      <span class="text-h5">Create New Assignment {{ this.class_id }}</span>
-    </v-card-title>
-    <v-form v-on:submit.prevent="save" ref="form">
-      <v-row>
-        <v-col>
-          <v-text-field
-            v-model="name"
-            label="Title"
-            hide-details="auto"
-            :rules="$requiredRules"
-          ></v-text-field>
-        </v-col>
-        <v-col>
+  <v-card class="pa-0">
+    <v-toolbar width="100%" class="mx-0" color="secondary " dark>
+      <v-card-text class="text-h5">Create New Assignment</v-card-text>
+      <v-spacer> </v-spacer>
+      <v-btn icon @click="$emit('closeDialog')">
+        <v-icon large color="red lighten-2">mdi-close-circle-outline</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-form v-on:submit.prevent="save" ref="form" class="pa-6">
+      <v-text-field
+        v-model="name"
+        label="Title"
+        hide-details="auto"
+        :rules="$requiredRules"
+      ></v-text-field>
+
+      <!-- <v-col>
           <v-select
             v-if="!class_id"
             :rules="$requiredRules"
@@ -31,35 +33,29 @@
             <template v-slot:selection="{ item }">{{ item.name }} </template>
             <template v-slot:item="{ item }">{{ item.name }} </template>
           </v-select>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            v-model="details"
-            label="Short Description"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-text-field
-            type="number"
-            v-model="mark"
-            label="Mark"
-            :rules="$requiredRules"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-file-input
-          label="Attachments"
-          v-model="attachments"
-          accept=".doc,.docx,.pdf,.jpg,.jpeg,.png"
-          chips
-          show-size
-          multiple
-          counter
-        ></v-file-input>
-      </v-row>
+        </v-col> -->
+
+      <v-text-field v-model="details" label="Short Description"></v-text-field>
+
+      <v-text-field
+        type="number"
+        v-model="mark"
+        label="Mark"
+        :rules="$requiredRules"
+      ></v-text-field>
+
+      <v-file-input
+        label="Attachments"
+        v-model="attachments"
+        prepend-icon=""
+        prepend-inner-icon="mdi-attachment"
+        accept=".doc,.docx,.pdf,.jpg,.jpeg,.png"
+        chips
+        show-size
+        multiple
+        counter
+      ></v-file-input>
+
       <v-row>
         <v-col>
           <v-menu
@@ -75,7 +71,7 @@
               <v-text-field
                 v-model="due_date"
                 label="Assignment Due Date"
-                prepend-icon="mdi-calendar"
+                prepend-inner-icon="mdi-calendar"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -107,7 +103,7 @@
               <v-text-field
                 v-model="due_time"
                 label="Assignment Due Time"
-                prepend-icon="mdi-clock-time-four-outline"
+                prepend-inner-icon="mdi-clock-time-four-outline"
                 :rules="$requiredRules"
                 readonly
                 v-bind="attrs"
@@ -128,10 +124,10 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
+        <!-- <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
           Close
-        </v-btn>
-        <v-btn color="blue darken-1" type="submit" text> Save </v-btn>
+        </v-btn> -->
+        <v-btn color="primary" type="submit"> Save </v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -194,17 +190,23 @@ export default {
   methods: {
     save() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch("assignments/add", {
-          name: this.name,
-          description: this.details,
-          attachments: this.attachments,
-          room: this.class_id ? this.class_id : this.selected_class.id,
-          submission_date_time: `${this.due_date} ${this.due_time}`,
-          mark: this.mark,
-        });
-        Object.assign(this.$data, initialState());
-        alert("Success");
-        this.$emit("closeDialog");
+        this.$store
+          .dispatch("assignments/add", {
+            name: this.name,
+            description: this.details,
+            attachments: this.attachments,
+            room: this.class_id ? this.class_id : this.selected_class.id,
+            submission_date_time: `${this.due_date} ${this.due_time}`,
+            mark: this.mark,
+          })
+          .then(() => {
+            Object.assign(this.$data, initialState());
+            alert("Success");
+            this.$emit("closeDialog");
+          })
+          .catch((err) => {
+            alert(err);
+          });
       }
     },
     getSelectText(item) {

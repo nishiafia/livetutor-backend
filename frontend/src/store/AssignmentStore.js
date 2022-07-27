@@ -28,10 +28,14 @@ export default {
           formData.append("attachments[]", payload.attachments[i]);
         }
       }
-      return api
-        .post("assignments/", formData, { headers: { "Content-Type": "multipart/form-data" } })
-        .then(() => dispatch("get"));
+      return new Promise(
+        (resolve, reject) =>
+          api.post("/assignments/", formData, { headers: { "Content-Type": "multipart/form-data" } }).then((response) => {
+            dispatch("get")
+          }).then(resolve).catch(reject));
     },
+
+
     update({ dispatch }, { id, name, description, due_date, due_time, mark }) {
       return api
         .put("assignments/", {

@@ -1,82 +1,49 @@
 <template>
-  <v-card>
-    <v-card-title>
-      <span class="text-h5">Create New Note</span>
-    </v-card-title>
-    <v-form ref="form" v-on:submit.prevent="save" class="pa-4">
-      <v-row>
-        <v-col>
-          <v-text-field
-            v-model="name"
-            label="URL"
-            hide-details="auto"
-            :rules="$requiredRules"
-          ></v-text-field>
-        </v-col>
-
-        <v-col>
-          <v-select
-            v-if="!class_id"
-            v-model="selected_class"
-            label="Select Class"
-            :items="user_created_classes"
-            item-text="name"
-            item-value="id"
-            :rules="$requiredRules"
-            persistent-hint
-            :hint="`Room: ${selected_class.name || 'Not Selected'} | Section: ${
-              selected_class.section || 'Not Selected'
-            } | Session: ${selected_class.session || 'Not Selected'}`"
-            return-object
-          >
-            <template v-slot:selection="{ item }"
-              >{{ item.name }} - {{ item.section }}
-            </template>
-            <template v-slot:item="{ item }"
-              >{{ item.name }} - {{ item.section }}
-            </template>
-          </v-select>
-        </v-col>
-
-        <!-- <v-row>
-            <v-text-field
-              v-model="topic"
-              label="Topic"
-              hide-details="auto"
-            ></v-text-field>
-          </v-row> -->
-      </v-row>
-      <v-row>
-        <v-text-field
-          v-model="details"
-          label="Short Description"
-        ></v-text-field>
-      </v-row>
-
+  <v-card class="pa-0">
+    <v-toolbar width="100%" class="mx-0" color="secondary " dark>
+      <v-card-text class="text-h5">Add New Link</v-card-text>
+      <v-spacer> </v-spacer>
+      <v-btn icon @click="$emit('closeDialog')">
+        <v-icon large color="red lighten-2">mdi-close-circle-outline</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-form v-on:submit.prevent="save" ref="form" class="pa-6">
+      <v-text-field
+        v-model="name"
+        label="Title"
+        :rules="$requiredRules"
+      ></v-text-field>
+      <v-text-field v-model="details" label="Short Description"></v-text-field>
+      <v-text-field
+        v-model="link"
+        :rules="link_rules"
+        label="Link URI"
+      ></v-text-field>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
+        <!-- <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
           Close
-        </v-btn>
-        <v-btn type="submit" color="blue darken-1" text> Save </v-btn>
+        </v-btn> -->
+        <v-btn color="primary" type="submit"> Save </v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
 </template>
 <script>
-import api from "@/services/api";
-import { mapGetters } from "vuex";
 function initialState() {
   return {
     form: "",
     name: "",
     details: "",
-    date: "",
-    attachments: {},
-    menu: false,
-    topic: "",
+    link: "",
     selected_class: {},
-    // classes: this.$store.state.classes.classes,
+    link_rules: [
+      (v) => !!v || "Link is required",
+      (v) =>
+        v.startsWith("http") ||
+        v.startsWith("https") ||
+        "Link must start with http or https",
+    ],
     colors: [
       "blue",
       "indigo",
@@ -90,18 +57,20 @@ function initialState() {
 }
 export default {
   props: ["class_id"],
-
   data: function () {
     return {
       form: "",
       name: "",
       details: "",
-      date: "",
-      attachments: {},
-      menu: false,
-      topic: "",
-      selected_class: {},
-      // classes: this.$store.state.classes.classes,
+      link_rules: [
+        (v) => !!v || "Link is required",
+        (v) =>
+          v.startsWith("http://") ||
+          v.startsWith("https://") ||
+          "Link must start with http or https",
+      ],
+      link: "",
+      classes: this.$store.state.classes.classes,
       colors: [
         "blue",
         "indigo",
@@ -119,16 +88,23 @@ export default {
   methods: {
     save() {
       if (this.$refs.form.validate()) {
-        const data = {
-          name: this.name,
-          description: this.details,
-          room: this.class_id ? this.class_id : this.selected_class.id,
-          // created_at: new Date().toLocaleString(),
-          attachments: this.attachments,
-        };
-        this.$store.dispatch("notes/add", data);
-        Object.assign(this.$data, initialState());
-        this.$emit("closeDialog");
+        this.$store
+          .dispatch("assignments/add", {
+            name: this.name,
+            description: this.details,
+            attachments: this.attachments,
+            room: this.class_id ? this.class_id : this.selected_class.id,
+            submission_date_time: `${this.due_date} ${this.due_time}`,
+            mark: this.mark,
+          })
+          .then(() => {
+            Object.assign(this.$data, initialState());
+            alert("Success");
+            this.$emit("closeDialog");
+          })
+          .catch((err) => {
+            alert(err);
+          });
       }
     },
     getSelectText(item) {
@@ -141,7 +117,6 @@ export default {
         .toISOString()
         .substr(0, 10);
     },
-    ...mapGetters({ user_created_classes: "classes/get_user_owned_classes" }),
   },
 };
 </script>

@@ -11,7 +11,9 @@
         <a>{{ item.class_code }}</a>
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
-            <v-icon @click="show_details = true" v-bind="attrs" v-on="on"> mdi-call-made </v-icon>
+            <v-icon @click="show_details = true" v-bind="attrs" v-on="on">
+              mdi-call-made
+            </v-icon>
           </template>
           <span>go to class</span>
         </v-tooltip>
@@ -41,15 +43,22 @@
     <v-row align="center" justify="center" class="pa-2">
       <v-dialog v-model="dialog_new_assignment" persistent max-width="700px">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn outlined v-bind="attrs" v-on="on" class="pa-2 ma-2">New Assignment </v-btn>
+          <v-btn outlined v-bind="attrs" v-on="on" class="pa-2 ma-2"
+            >New Assignment
+          </v-btn>
         </template>
-        <new-assignment v-bind:class_id="class_id" @closeDialog="new_assignment_close_dialog">
+        <new-assignment
+          v-bind:class_id="class_id"
+          @closeDialog="new_assignment_close_dialog"
+        >
         </new-assignment>
       </v-dialog>
 
       <v-dialog max-width="1000px" v-model="dialog_view_all">
         <template v-slot:activator="{ on, attrs }"
-          ><v-btn outlined v-bind="attrs" v-on="on" class="pa-2 ma-2">View All</v-btn></template
+          ><v-btn outlined v-bind="attrs" v-on="on" class="pa-2 ma-2"
+            >View All</v-btn
+          ></template
         >
         <view-all-for-tab-item
           :headers="headers"
@@ -81,10 +90,7 @@ export default {
           text: "Title ",
           value: "name",
         },
-        {
-          text: "Room",
-          value: "room",
-        },
+
         {
           text: "Assigned On",
           value: "created_at",
@@ -102,7 +108,9 @@ export default {
   computed: {
     assignments() {
       return this.class_id
-        ? this.$store.getters["assignments/assignments_for_current_class"](this.class_id)
+        ? this.$store.getters["assignments/assignments_for_current_class"](
+            this.class_id
+          )
         : this.$store.getters["assignments/all_assignment"];
     },
   },

@@ -11,7 +11,7 @@
       <v-tab>Exams</v-tab
       ><v-tab-item><TabsNotes :class_id="class_id"></TabsNotes></v-tab-item>
       <v-tab-item>
-        <!-- <TabsLinks :class_id="class_id"></TabsLinks> -->
+        <TabsLinks :class_id="class_id"></TabsLinks>
       </v-tab-item>
       <v-tab-item
         ><tabs-assignments :class_id="class_id"></tabs-assignments
@@ -25,9 +25,10 @@
 import TabsAssignments from "./TabsAssignments.vue";
 import TabsExams from "./TabsExams.vue";
 import TabsNotes from "./TabsNotes.vue";
+import TabsLinks from "./TabsLinks.vue";
 
 export default {
-  components: { TabsAssignments, TabsNotes, TabsExams },
+  components: { TabsAssignments, TabsNotes, TabsExams, TabsLinks },
   props: ["class_id"],
 };
 </script>

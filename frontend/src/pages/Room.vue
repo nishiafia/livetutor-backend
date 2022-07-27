@@ -1,22 +1,25 @@
 <template>
   <v-container>
     <v-row>
-      <v-col
-        ><class-description :class_id="class_id"></class-description>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
+      <v-col lg="8" cols="12">
         <schedules :class_id="class_id"></schedules>
+      </v-col>
+
+      <v-col lg="4" cols="12">
+        <v-row>
+          <v-col cols="12">
+            <class-description :class_id="class_id"></class-description>
+          </v-col>
+        </v-row>
+        <v-row
+          ><v-col cols="12"><user-tabs :class_id="class_id"></user-tabs></v-col>
+        </v-row>
       </v-col>
     </v-row>
     <v-row>
       <v-col lg="6" cols="12"
         ><activities :class_id="class_id"></activities
       ></v-col>
-      <v-col class="mt-5" lg="6" cols="12">
-        <user-tabs :class_id="class_id"></user-tabs>
-      </v-col>
     </v-row>
   </v-container>
 </template>

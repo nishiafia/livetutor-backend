@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card height="300">
     <v-toolbar color="secondary" flat dark>
       <v-toolbar-title v-html="class_info.name"></v-toolbar-title>
 
@@ -22,17 +22,21 @@
           <v-dialog v-model="dialogEditClassDescription" width="800">
             <template v-slot:activator="{ on, attrs }">
               <v-list-item text v-bind="attrs" v-on="on" link
-                ><v-icon class="px-2" color="accent">mdi-note-edit</v-icon>Update Room Information
+                ><v-icon class="px-2" color="accent">mdi-note-edit</v-icon
+                >Update Room Information
               </v-list-item>
             </template>
 
-            <edit-class-description :class_info="class_info"></edit-class-description>
+            <edit-class-description
+              :class_info="class_info"
+            ></edit-class-description>
           </v-dialog>
           <v-dialog v-model="dialog" width="800">
             <template v-slot:activator="{ on, attrs }">
               <v-list-item text v-bind="attrs" v-on="on" link
-                ><v-icon class="px-2" color="accent">mdi-calendar-multiple</v-icon>Update Room
-                Meetings
+                ><v-icon class="px-2" color="accent"
+                  >mdi-calendar-multiple</v-icon
+                >Update Room Meetings
               </v-list-item>
             </template>
             <edit-meeting :class_id="class_info.id"></edit-meeting>
@@ -40,8 +44,9 @@
           <v-dialog v-model="dialogInvite" width="800">
             <template v-slot:activator="{ on, attrs }">
               <v-list-item text v-bind="attrs" v-on="on" link
-                ><v-icon class="px-2" color="accent">mdi-account-multiple</v-icon>Manage Room
-                Attendants
+                ><v-icon class="px-2" color="accent"
+                  >mdi-account-multiple</v-icon
+                >Manage Room Attendants
               </v-list-item>
             </template>
             <enrolled-students :class_id="class_id"></enrolled-students>
@@ -52,8 +57,10 @@
             v-on="on"
             link
             :to="{ name: 'fees', params: { id: class_info.id } }"
-            ><v-icon class="px-2" color="accent">mdi-credit-card-outline</v-icon>Manage Room
-            Payments<v-icon class="px-2" color="accent">mdi-arrow-top-right</v-icon>
+            ><v-icon class="px-2" color="accent">mdi-credit-card-outline</v-icon
+            >Manage Room Payments<v-icon class="px-2" color="accent"
+              >mdi-arrow-top-right</v-icon
+            >
           </v-list-item>
         </v-list>
       </v-menu>
@@ -80,7 +87,9 @@ export default {
     };
   },
   created() {
-    this.class_info = this.$store.getters["classes/get_current_class_info"](this.class_id);
+    this.class_info = this.$store.getters["classes/get_current_class_info"](
+      this.class_id
+    );
     // this.class_info = this.$store.getters[
     //   "assignments/assignments_for_current_class"
     // ](this.class_id);

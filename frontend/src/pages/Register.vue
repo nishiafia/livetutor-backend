@@ -1,41 +1,29 @@
 <template>
   <v-container fluid fill-height>
     <v-row align="center" justify="center">
-      <v-col md="6">
+      <v-col cols="12" md="4">
         <v-card class="mx-4 pa-4">
-          <v-form
-            ref="form"
-            v-if="!otp_verified"
-            @submit.prevent="check_mobile"
-            method="POST"
-          >
+          <v-form ref="form" v-if="!otp_verified">
             <PhoneField v-model="mobile" :rules="$requiredRules"></PhoneField>
-            <!-- <vue-tel-input-vuetify
-              v-model="mobile"
-              :rules="$phoneRules"
-              counter="11"
-              type="tel"
-            ></vue-tel-input-vuetify> -->
             <v-alert type="info" class="d-flex align-items-center">
               Please save the below pin code for your login
             </v-alert>
-            <!-- #TODO: READONLY -->
             <v-text-field
+              readonly
               :rules="$requiredRules"
               v-model="password"
-              :value="password"
             ></v-text-field>
-
-            <v-btn type="submit" color="success" block>Continue</v-btn>
+            <v-btn @click="check_mobile()" color="success" block
+              >Continue</v-btn
+            >
           </v-form>
-          <v-form v-if="otp_verified" ref="form2" lazy-validation>
+          <v-form ref="form2" v-show="otp_verified">
             <v-text-field
               v-model="name"
               label="Full Name"
               :rules="$requiredRules"
             >
             </v-text-field>
-
             <v-text-field
               v-model="address"
               :rules="$requiredRules"
@@ -44,11 +32,10 @@
             <v-text-field
               v-model="email"
               type="email"
-              label="Email"
               :rules="$requiredRules"
+              label="Email"
             ></v-text-field>
-
-            <v-btn @click="register" color="success" block
+            <v-btn @click="register()" color="success" block
               >Create Account</v-btn
             >
           </v-form>
@@ -59,7 +46,6 @@
 </template>
 
 <script>
-import api from "@/services/api";
 import axios from "axios";
 import Individual from "../components/register/Individual.vue";
 import Institution from "../components/register/Institution.vue";
@@ -73,8 +59,8 @@ export default {
       form2: "",
       name: "",
       mobile: "",
-      address: "",
-      email: "",
+      address: undefined,
+      email: undefined,
       password: Math.random().toString().slice(2, 6),
       otp: "",
       pass_generated: false,
@@ -88,18 +74,19 @@ export default {
     check_mobile() {
       if (this.$refs.form.validate()) {
         this.otp_verified = true;
+        this.$refs.form2.resetValidation();
       }
     },
     register() {
       if (this.$refs.form2.validate()) {
         const data = {
           name: this.name,
-          email: this.email,
-          phone: this.mobile.replace("-", ""),
+          phone: this.mobile,
           address: this.address,
           password: this.password,
+          email: this.email,
         };
-        axios
+        return axios
           .post(
             process.env.NODE_ENV === "production"
               ? "https://www.apps.livetutor.com.bd/api/users/"
