@@ -52,29 +52,6 @@
                 md="6"
               >
                 <Thumbnail :file="file.file"></Thumbnail>
-                <!-- <v-img
-                  v-if="
-                    file.file
-                      .split('.')
-                      .pop()
-                      .match(/(jpg|jpeg|png|gif)$/i)
-                  "
-                  :src="file.file"
-                  max-width="100%"
-                  height="150"
-                  @click="openFile(file.file)"
-                  class="grey lighten-2"
-                />
-                <v-img
-                  v-else
-                  max-width="100%"
-                  height="150"
-                  @click="openFile(file.file)"
-                >
-                  <v-row justify="center" align="center" class="fill-height">
-                    <h1>{{ file.file.split(".").pop() }}</h1>
-                  </v-row>
-                </v-img> -->
               </v-col>
             </v-row>
 
@@ -104,12 +81,14 @@
               </v-file-input>
             </v-card-actions>
 
-            <v-list-group>
+            <v-list-group @click="getComments(activity)">
               <template v-slot:activator>
                 <v-list-item-title>Comments</v-list-item-title>
               </template>
+
               <v-list-item>
                 <v-text-field
+                  ref="txtComment"
                   v-model="activity.comment"
                   append-icon="mdi-send"
                   @click:append="submitComment(activity)"
@@ -161,6 +140,9 @@ export default {
       console.log(assignments_g);
       const assignments = assignments_g.map((assignment) => ({
         ...assignment,
+        comments: assignment.comments.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        ),
         type: "assignment",
         color: "orange",
       }));
@@ -178,6 +160,7 @@ export default {
       );
       const exams = exams_g.map((exam) => ({
         ...exam,
+
         type: "exam",
         color: "green",
       }));
@@ -193,6 +176,9 @@ export default {
     },
   },
   methods: {
+    getComments({ id, type }) {
+      this.$store.dispatch(`${type}s/getComments`, { id });
+    },
     /*
      *submit assignment
      *params: id->activity id
@@ -215,9 +201,11 @@ export default {
     },
 
     submitComment({ id, comment, type }) {
-      api
+      this.$api
         .post(`${type}s/${id}/comments/`, { [type]: id, text: comment })
-        .then((r) => console.log(r));
+        .then((r) => {
+          this.$store.dispatch(`${type}s/getComments`, { id });
+        });
     },
     openFile(file) {
       window.open(file);

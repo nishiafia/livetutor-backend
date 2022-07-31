@@ -1,20 +1,22 @@
 <template>
   <v-card>
-    <v-card-title>
-      <span class="text-h5">Create New Note</span>
-    </v-card-title>
-    <v-form ref="form" v-on:submit.prevent="save" class="pa-4">
-      <v-row>
-        <v-col>
-          <v-text-field
-            v-model="name"
-            label="Title"
-            hide-details="auto"
-            :rules="$requiredRules"
-          ></v-text-field>
-        </v-col>
+    <v-toolbar width="100%" class="mx-0" color="secondary " dark>
+      <v-card-text class="text-h5">Add New Note</v-card-text>
+      <v-spacer> </v-spacer>
+      <v-btn icon @click="$emit('closeDialog')">
+        <v-icon large color="red lighten-2">mdi-close-circle-outline</v-icon>
+      </v-btn>
+    </v-toolbar>
 
-        <v-col>
+    <v-form ref="form" v-on:submit.prevent="save" class="pa-6">
+      <v-text-field
+        v-model="name"
+        label="Title"
+        hide-details="auto"
+        :rules="$requiredRules"
+      ></v-text-field>
+
+      <!-- <v-col>
           <v-select
             v-if="!class_id"
             v-model="selected_class"
@@ -36,39 +38,35 @@
               >{{ item.name }} - {{ item.section }}
             </template>
           </v-select>
-        </v-col>
+        </v-col> -->
 
-        <!-- <v-row>
+      <!-- <v-row>
             <v-text-field
               v-model="topic"
               label="Topic"
               hide-details="auto"
             ></v-text-field>
           </v-row> -->
-      </v-row>
-      <v-row>
-        <v-text-field
-          v-model="details"
-          label="Short Description"
-        ></v-text-field>
-      </v-row>
-      <v-row>
-        <v-file-input
-          v-model="attachments"
-          accept=".doc,.docx,.pdf,.jpg,.jpeg,.png"
-          chips
-          show-size
-          multiple
-          counter
-        ></v-file-input>
-      </v-row>
+
+      <v-text-field v-model="details" label="Short Description"></v-text-field>
+
+      <v-file-input
+        v-model="attachments"
+        accept=".doc,.docx,.pdf,.jpg,.jpeg,.png"
+        chips
+        show-size
+        multiple
+        counter
+        prepend-icon=""
+        prepend-inner-icon="mdi-attachment"
+      ></v-file-input>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
+        <!-- <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
           Close
-        </v-btn>
-        <v-btn type="submit" color="blue darken-1" text> Save </v-btn>
+        </v-btn> -->
+        <v-btn type="submit" color="secondary"> Save </v-btn>
       </v-card-actions>
     </v-form>
   </v-card>

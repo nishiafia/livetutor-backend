@@ -127,7 +127,7 @@
         <!-- <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
           Close
         </v-btn> -->
-        <v-btn color="primary" type="submit"> Save </v-btn>
+        <v-btn color="secondary" type="submit"> Save </v-btn>
       </v-card-actions>
     </v-form>
   </v-card>

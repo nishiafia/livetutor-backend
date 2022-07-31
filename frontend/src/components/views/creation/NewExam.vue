@@ -1,9 +1,13 @@
 <template>
-  <v-card class="pa-4">
-    <v-card-title>
-      <span class="text-h5">Create New Exam {{ this.class_id }}</span>
-    </v-card-title>
-    <v-form v-on:submit.prevent="save" ref="form">
+  <v-card>
+    <v-toolbar width="100%" class="mx-0" color="secondary " dark>
+      <v-card-text class="text-h5">Add New Exam</v-card-text>
+      <v-spacer> </v-spacer>
+      <v-btn icon @click="$emit('closeDialog')">
+        <v-icon large color="red lighten-2">mdi-close-circle-outline</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-form v-on:submit.prevent="save" ref="form" class="pa-6">
       <v-row>
         <v-col>
           <v-text-field
@@ -13,7 +17,7 @@
             :rules="$requiredRules"
           ></v-text-field>
         </v-col>
-
+        <!--
         <v-col>
           <v-select
             v-if="!class_id"
@@ -27,7 +31,7 @@
             :rules="$requiredRules"
           >
           </v-select>
-        </v-col>
+        </v-col> -->
       </v-row>
 
       <v-row>
@@ -47,15 +51,19 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-file-input
-          label="Attachments"
-          v-model="attachments"
-          accept=".doc,.docx,.pdf,.jpg,.jpeg,.png"
-          chips
-          show-size
-          multiple
-          counter
-        ></v-file-input>
+        <v-col>
+          <v-file-input
+            label="Attachments"
+            v-model="attachments"
+            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png"
+            chips
+            show-size
+            multiple
+            prepend-inner-icon="mdi-attachment"
+            prepend-icon=""
+            counter
+          ></v-file-input>
+        </v-col>
       </v-row>
       <v-row>
         <v-col>
@@ -74,7 +82,7 @@
                 v-model="exam_date"
                 :rules="$requiredRules"
                 label="Exam Date"
-                prepend-icon="mdi-calendar"
+                prepend-inner-icon="mdi-calendar"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -108,7 +116,7 @@
                 v-model="start_time"
                 :rules="$requiredRules"
                 label="Start Time"
-                prepend-icon="mdi-clock-time-four-outline"
+                prepend-inner-icon="mdi-clock-time-four-outline"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -143,7 +151,7 @@
                 v-model="end_time"
                 :rules="$requiredRules"
                 label="Submission Time"
-                prepend-icon="mdi-clock-time-four-outline"
+                prepend-inner-icon="mdi-clock-time-four-outline"
                 readonly
                 v-bind="attrs"
                 v-on="on"
@@ -163,10 +171,10 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
+        <!-- <v-btn color="blue darken-1" text @click="$emit('closeDialog')">
           Close
-        </v-btn>
-        <v-btn color="blue darken-1" type="submit" text> Save </v-btn>
+        </v-btn> -->
+        <v-btn color="secondary" type="submit"> Save </v-btn>
       </v-card-actions>
     </v-form>
   </v-card>

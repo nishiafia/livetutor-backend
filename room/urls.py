@@ -3,6 +3,8 @@
 from categories.views import CategoryViewset
 from payment.views import PaymentViewset, RoomFeeViewset, SummaryViewset
 from rest_framework_extensions.routers import ExtendedSimpleRouter
+from task.views.assignment_views import AssignmentViewset
+from task.views.exam_views import ExamViewset
 
 # from livetutor_py.urls import router
 from .views import RoomUserViewset, RoomViewset
@@ -22,4 +24,10 @@ room_routes.register(r'payment-summary', SummaryViewset,
                      basename='payment-summary', parents_query_lookups=['room'])
 router.register('categories', CategoryViewset, basename='categories')
 
+room_routes.register('assignments', AssignmentViewset,
+                     basename='assignments', parents_query_lookups=['room'])
+room_routes.register('exams', ExamViewset,
+                     basename='exams', parents_query_lookups=['room'])
+room_routes.register('notes', ExamViewset,
+                     basename='notes', parents_query_lookups=['room'])
 urlpatterns = router.urls

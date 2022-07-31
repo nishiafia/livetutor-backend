@@ -59,6 +59,7 @@ class AssignmentFilesSerializer(serializers.ModelSerializer):
 class AssignmentSerializer(TaskFileUploadMixin):
     files = AssignmentFilesSerializer(many=True, required=False)
     comments = AssignmentCommentSerializer(many=True, required=False)
+    user_is_author = serializers.BooleanField(read_only=True)
     # assignment_submissions = AssignmentSubmissionSerializer(
     #     many=True, required=False)
 
@@ -66,12 +67,7 @@ class AssignmentSerializer(TaskFileUploadMixin):
         model = Assignment
         fields = '__all__'
 
-    # def create(self, validated_data):
-    #     return super().create(validated_data)
-        # print(self)
-        # assignment_files = validated_data.pop('assignment_files')
-        # assignment = Assignment.objects.create(**validated_data)
-        # for assignment_file in assignment_files:
-        #     AssignmentFile.objects.create(
-        #         assignment=assignment, **assignment_file)
-        # return assignment
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['is_author'] = instance.room.author == self.context['request'].user
+        return data

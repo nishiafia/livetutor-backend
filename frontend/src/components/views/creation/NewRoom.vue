@@ -1,7 +1,10 @@
 <template>
   <v-card>
     <v-form ref="form">
-      <v-card-title>Create a Room</v-card-title>
+      <v-toolbar width="100%" class="mx-0" color="secondary " dark>
+        <v-card-text class="text-h5">Create New Room</v-card-text>
+      </v-toolbar>
+
       <!-- <v-card> -->
       <v-card-text>
         <v-row>
@@ -37,7 +40,7 @@
         <v-btn v-else color="blue darken-1" text @click="closeDialog">
           Close
         </v-btn>
-        <v-btn color="blue darken-1" @click="save" text> Continue </v-btn>
+        <v-btn color="secondary" @click="save"> Continue </v-btn>
       </v-card-actions></v-form
     >
   </v-card>

@@ -44,7 +44,7 @@ class AssignmentSubmissionViewset(NestedViewSetMixin, ModelViewSet):
 
 
 class AssignmentViewset(NestedViewSetMixin, ModelViewSet):
-    permission_classes = [RoomAdminPermission, ]
+    #permission_classes = [RoomAdminPermission, ]
     parser_classes = [MultiPartParser, FormParser]
     queryset = Assignment.objects.all()
     serializer_class = AssignmentSerializer

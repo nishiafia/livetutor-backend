@@ -12,6 +12,7 @@ export default {
           "load",
           response.data.map((data) => ({
             ...data,
+            comments: [],
             created_at: new Date(data.created_at).toLocaleString(),
           }))
         )
@@ -64,20 +65,34 @@ export default {
         })
         .then((res) => console.log(res));
     },
+    getComments({ commit, getters }, payload) {
+
+      return api.get(`assignments/${payload.id}/comments/`).then(
+        (response) => {
+          commit("loadComments", { id: payload.id, comments: response.data });
+
+        }
+      ).catch((err) => console.log(err));
+
+    }
   },
 
   mutations: {
     load(state, payload) {
       state.assignments = payload;
     },
+    loadComments(state, payload) {
+      state.assignments.find((assignment) => assignment.id === payload.id).comments = payload.comments;
+    }
   },
 
   getters: {
     all_assignment: (state) => state.assignments,
-
     assignments_for_current_class: (state) => (class_id) =>
       state.assignments.filter((assignment) => assignment.room == class_id),
     get_submission_by_assignment: (state) => (assignment_id) =>
       state.submissions.filter((submission) => submission.assignment_id === assignment_id),
+    getComments: (state) => (id) => state.assignments.find((assignment) => assignment.id === id).comments
+
   },
 };
