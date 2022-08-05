@@ -10,7 +10,6 @@
         color="third"
         v-html="category.name"
       ></v-chip>
-
       <v-spacer></v-spacer>
       <v-menu v-if="class_info.is_author">
         <template v-slot:activator="{ on, attrs }">
@@ -65,8 +64,17 @@
         </v-list>
       </v-menu>
     </v-toolbar>
-
-    <!-- <v-card-subtitle>{{ class_info.code }}</v-card-subtitle> -->
+    <v-row>
+      <v-col cols="12" md="6">
+        <v-card height="120">
+          <v-card-title
+            >Total Students: {{ class_info.user.length }}</v-card-title
+          >
+        </v-card> </v-col
+      ><v-col cols="12" md="6">
+        <v-card height="120"> </v-card>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -95,9 +103,6 @@ export default {
     // ](this.class_id);
   },
   methods: {
-    log: () => {
-      console.log("xxx");
-    },
     deleteRoom() {
       this.$store.dispatch("classes/delete", { id: this.class_id });
     },

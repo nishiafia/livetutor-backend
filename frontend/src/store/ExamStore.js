@@ -60,11 +60,24 @@ export default {
         .post(`exams/${exam_id}/submissions/`, formData, { headers: { "Content-Type": "multipart/form-data" } })
         .then((res) => console.log(res));
     },
+    getComments({ commit, getters }, payload) {
+
+      return api.get(`exams/${payload.id}/comments/`).then(
+        (response) => {
+          commit("loadComments", { id: payload.id, comments: response.data });
+
+        }
+      ).catch((err) => console.log(err));
+
+    }
   },
   mutations: {
     load(state, payload) {
       state.exams = payload;
     },
+    loadComments(state, payload) {
+      state.exams.find((exam) => exam.id === payload.id).comments = payload.comments;
+    }
   },
   getters: {
     all_exam: (state) => state.exams,

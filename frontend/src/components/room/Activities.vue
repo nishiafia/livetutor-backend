@@ -57,7 +57,11 @@
 
             <v-card-actions v-if="activity.type == 'assignment' || 'exam'">
               <v-file-input
-                v-if="!owner && activity.type !== 'note'"
+                v-if="
+                  !activity.is_author &&
+                  activity.type !== 'note' &&
+                  !activity.has_submitted
+                "
                 class="pr-2"
                 multiple
                 small-chips
@@ -79,6 +83,14 @@
                 "
               >
               </v-file-input>
+              <v-card-text
+                v-if="
+                  !activity.is_author &&
+                  activity.type !== 'note' &&
+                  activity.has_submitted
+                "
+                >You Have Already Submitted
+              </v-card-text>
             </v-card-actions>
 
             <v-list-group @click="getComments(activity)">
@@ -87,14 +99,22 @@
               </template>
 
               <v-list-item>
-                <v-text-field
-                  ref="txtComment"
-                  v-model="activity.comment"
-                  append-icon="mdi-send"
-                  @click:append="submitComment(activity)"
-                >
-                </v-text-field
-              ></v-list-item>
+                <v-text-field v-model="activity.comment">
+                  <template #append>
+                    <v-btn
+                      icon
+                      @click="
+                        () => {
+                          submitComment(activity);
+                          activity.comment = '';
+                        }
+                      "
+                    >
+                      <v-icon>mdi-send</v-icon>
+                    </v-btn>
+                  </template>
+                </v-text-field>
+              </v-list-item>
 
               <v-list-item
                 v-for="comment in activity.comments"
@@ -127,11 +147,7 @@ import Thumbnail from "@/components/global/Thumbnail.vue";
 export default {
   components: { Thumbnail },
   props: ["class_id"],
-  // created() {
-  //   this.$store.dispatch("assignments/get");
-  //   this.$store.dispatch("exams/get");
-  //   this.$store.dispatch("notes/get");
-  // },
+
   computed: {
     activities() {
       const assignments_g = this.$store.getters[
@@ -152,6 +168,9 @@ export default {
       );
       const notes = notes_g.map((note) => ({
         ...note,
+        comments: note.comments.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        ),
         type: "note",
         color: "blue",
       }));
@@ -160,7 +179,9 @@ export default {
       );
       const exams = exams_g.map((exam) => ({
         ...exam,
-
+        comments: exam.comments.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        ),
         type: "exam",
         color: "green",
       }));

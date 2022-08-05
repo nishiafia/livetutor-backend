@@ -44,6 +44,16 @@ export default {
     },
     delete({ dispatch }, id) {
       return api.delete(`notes/${id}/`).then(() => dispatch("get"));
+    },
+    getComments({ commit, getters }, payload) {
+
+      return api.get(`notes/${payload.id}/comments/`).then(
+        (response) => {
+          commit("loadComments", { id: payload.id, comments: response.data });
+
+        }
+      ).catch((err) => console.log(err));
+
     }
   },
 
@@ -51,6 +61,9 @@ export default {
     load(state, payload) {
       state.notes = payload;
     },
+    loadComments(state, payload) {
+      state.notes.find((note) => note.id === payload.id).comments = payload.comments;
+    }
   },
   getters: {
     all_note: (state) => state.notes,

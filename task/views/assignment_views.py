@@ -19,7 +19,6 @@ class AssignmentSubmissionViewset(NestedViewSetMixin, ModelViewSet):
     def create(self, request, *args, **kwargs):
         files = [{'file': file}
                  for file in request.data.pop('assignment_submission_files[]')]
-        print(files)
         data = {
             'assignment': request.data.get('assignment_id'),
             'assignment_submission_files': files,
@@ -60,7 +59,7 @@ class AssignmentViewset(NestedViewSetMixin, ModelViewSet):
             'submission_date_time': request.data.get('submission_date_time'),
             'mark': request.data.get('mark'),
         }
-        serializer = AssignmentSerializer(
+        serializer = self.get_serializer(
             data=data)
         if serializer.is_valid():
             serializer.save()

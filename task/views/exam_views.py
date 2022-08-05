@@ -59,14 +59,14 @@ class ExamCommentViewset(NestedViewSetMixin, ModelViewSet):
 
 
 class ExamSubmissionViewset(NestedViewSetMixin, ModelViewSet):
-    serializer_class = ExamSubmissionSerializer
+    parser_classes = (parsers.MultiPartParser,
+                      parsers.FormParser, parsers.JSONParser)
     queryset = ExamSubmission.objects.all()
+    serializer_class = ExamSubmissionSerializer
 
     def create(self, request, *args, **kwargs):
-
         files = [{'file': file}
                  for file in request.data.pop('exam_submission_files[]')]
-        print(files)
         data = {
             'exam': request.data.get('exam_id'),
             'exam_submission_files': files,
@@ -79,10 +79,10 @@ class ExamSubmissionViewset(NestedViewSetMixin, ModelViewSet):
         else:
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @decorators.action(detail=False, methods=['put'], url_name='update_exam_mark', url_path='update-mark', )
+    @decorators.action(detail=False, methods=['put'], url_name='update_assignment_mark', url_path='update-mark', )
     def update_mark(self, request, **kwargs):
         exam_submission, created = ExamSubmissionMark.objects.get_or_create(
-            exam_submission_id=request.data.get(
+            exam_submission__id=request.data.get(
                 'exam_submission_id'),
         )
         exam_submission.mark = request.data.get('mark')

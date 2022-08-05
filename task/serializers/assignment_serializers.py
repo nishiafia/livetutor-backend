@@ -35,7 +35,8 @@ class AssignmentSubmissionSerializer(serializers.ModelSerializer):
         assignment_submission = AssignmentSubmission.objects.create(
             **validated_data)
         AssignmentSubmissionFile.objects.bulk_create([AssignmentSubmissionFile(
-            file=assignment_submission_file['file'], assignment_submission=assignment_submission) for assignment_submission_file in assignment_submission_files])
+            file=assignment_submission_file['file'], assignment_submission=assignment_submission)
+            for assignment_submission_file in assignment_submission_files])
         return assignment_submission
 
     def to_representation(self, instance):
@@ -59,7 +60,8 @@ class AssignmentFilesSerializer(serializers.ModelSerializer):
 class AssignmentSerializer(TaskFileUploadMixin):
     files = AssignmentFilesSerializer(many=True, required=False)
     comments = AssignmentCommentSerializer(many=True, required=False)
-    user_is_author = serializers.BooleanField(read_only=True)
+    is_author = serializers.BooleanField(read_only=True)
+    has_submitted = serializers.BooleanField(read_only=True)
     # assignment_submissions = AssignmentSubmissionSerializer(
     #     many=True, required=False)
 
@@ -70,4 +72,6 @@ class AssignmentSerializer(TaskFileUploadMixin):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['is_author'] = instance.room.author == self.context['request'].user
+        data['has_submitted'] = instance.assignment_submissions.filter(
+            room_user__user_id=self.context['request'].user).exists()
         return data

@@ -1,3 +1,5 @@
+from urllib import request
+
 from rest_framework import serializers
 from task.mixins import TaskFileUploadMixin
 from task.models import (Exam, ExamComment, ExamFile, ExamSubmission,
@@ -39,7 +41,6 @@ class ExamSubmissionSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['exam'] = ExamSerializer(instance.exam).data
         data['room_user'] = UserSerializer(instance.room_user.user).data
         return data
 
@@ -59,7 +60,16 @@ class ExamFileSerializer(TaskFileUploadMixin):
 class ExamSerializer(TaskFileUploadMixin):
     files = ExamFileSerializer(many=True, required=False)
     comments = ExamCommentSerializer(many=True, required=False)
+    has_submitted = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Exam
         fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        user = self.context['request'].user
+        data['is_author'] = instance.room.author == user
+        data['has_submitted'] = instance.exam_submissions.filter(
+            room_user__user_id=user).exists()
+        return data

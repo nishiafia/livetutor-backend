@@ -67,7 +67,7 @@ export default {
         (v) =>
           v.startsWith("http://") ||
           v.startsWith("https://") ||
-          "Link must start with http or https",
+          "Link must start with http:// or https://",
       ],
       link: "",
       classes: this.$store.state.classes.classes,

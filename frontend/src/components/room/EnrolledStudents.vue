@@ -12,7 +12,6 @@
     </v-app-bar>
     <v-list>
       <v-list-item v-for="room_user in users" :key="room_user.id">
-        {{ room_user }}
         {{ room_user.user.email }}
         <v-chip
           class="mx-1"
