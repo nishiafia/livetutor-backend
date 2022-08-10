@@ -1,4 +1,7 @@
+from urllib import request
+
 from django.db.models import Q
+from livetutor import mixins, pagination
 from livetutor.permissions import (CreateObjectPermission, ObjectPermission,
                                    RoomAdminPermission, RoomUpdatePermission)
 from rest_framework import permissions, response, status, viewsets
@@ -11,9 +14,7 @@ from .permissions import RoomAdminOnly
 from .serializers import *
 
 
-
-
-class RoomViewset(NestedViewSetMixin, viewsets.ModelViewSet):
+class RoomViewset(NestedViewSetMixin, viewsets.ModelViewSet, mixins.ExportMixin):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
@@ -47,7 +48,7 @@ class RoomViewset(NestedViewSetMixin, viewsets.ModelViewSet):
         #     return response.Response(
         #         {'room': RoomSerializer(room).data}, status=status.HTTP_201_CREATED)
 
-    @ action(detail=False, methods=['post'])
+    @action(detail=False, methods=['post'])
     def join(self, request, pk=None):
         '''
             user join room using room code
@@ -68,12 +69,25 @@ class RoomViewset(NestedViewSetMixin, viewsets.ModelViewSet):
             return response.Response({'success': 'Successfully joined room'}, status=status.HTTP_200_OK)
 
 
-class RoomUserViewset(NestedViewSetMixin, viewsets.ModelViewSet):
+class RoomUserViewset(viewsets.ModelViewSet, NestedViewSetMixin, mixins.ExportMixin):
     permission_classes = [RoomAdminPermission]
     # filter_backends = [filters.ObjectPermissionsFilter]
     queryset = RoomUser.objects.all()
     serializer_class = RoomUserSerializer
+    pagination_class = pagination.StandardResultsSetPagination
     # permission_classes = [RoomUpdatePermission]
+
+    def get_queryset(self):
+        query_params = {}
+        for k, v in self.request.query_params.items():
+            if k not in ['page', 'page_size']:
+                query_params[k] = v
+
+        return super().get_queryset().filter(
+            room__author=self.request.user
+        ).filter(
+            **query_params
+        )
 
     def create(self, request, *args, **kwargs):
         room_id = kwargs['parent_lookup_room']
@@ -86,3 +100,38 @@ class RoomUserViewset(NestedViewSetMixin, viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             return super().create(request, *args, **kwargs)
+
+    @ action(methods=['post'], detail=False, url_path='assign-bulk-room-users', )
+    def assign_bulk_room_users(self, request, pk=None):
+        room_users = request.data.get('room_users_data')
+        room_users_data = []
+        for data in room_users:
+            if RoomUser.objects.filter(room__code=data['room'], user__phone=data['phone'], room__author=request.user).exists():
+                data['user_exist_status'] = 'User Already Exists'
+            else:
+                user = User.objects.filter(phone=data['phone'])
+                if user.exists():
+                    user = user.first()
+                    data['user_exist_status'] = 'User Exists'
+                else:
+                    user, created = User.objects.create(
+                        phone=data['phone'], username=data['username'], password=data['password'], name=data['name'])
+                    if created:
+                        data['user_exist_status'] = 'User Created'
+                author_room = Room.objects.filter(
+                    code=data['room'], author=request.user)
+                if author_room.exists():
+                    room_users_data.append(
+                        {'room': author_room.first().id,
+                         'user': user.id,
+                         'role': data['role']
+                         }
+                    )
+                else:
+                    data['room_error'] = 'Room not found'
+        serializer = self.get_serializer(data=room_users_data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(room_users, status=status.HTTP_201_CREATED)
+        else:
+            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

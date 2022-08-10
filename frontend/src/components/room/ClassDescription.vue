@@ -65,13 +65,14 @@
       </v-menu>
     </v-toolbar>
     <v-row>
-      <v-col cols="12" md="6">
+      <!-- <v-col cols="12" md="6">
         <v-card height="120">
           <v-card-title
             >Total Students: {{ class_info.user.length }}</v-card-title
           >
         </v-card> </v-col
-      ><v-col cols="12" md="6">
+      > -->
+      <v-col cols="12" md="6">
         <v-card height="120"> </v-card>
       </v-col>
     </v-row>
@@ -81,7 +82,7 @@
 <script>
 import EditMeeting from "./ClassMeetings.vue";
 import EditClassDescription from "@/components/views/edit/EditClassDescription.vue";
-import EnrolledStudents from "./EnrolledStudents.vue";
+import EnrolledStudents from "./EnrolledUsers.vue";
 
 export default {
   components: { EditMeeting, EditClassDescription, EnrolledStudents },

@@ -2,7 +2,7 @@
   <v-card height="300">
     <v-toolbar color="secondary" flat dark>
       <v-toolbar-title
-        v-html="$store.getters['user/getUsername']"
+        v-html="$store.getters['user/getName']"
       ></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu>
@@ -14,8 +14,8 @@
         <v-list>
           <v-dialog
             v-model="dialogShowTeacherBooking"
-            width="800"
-            min-height="400"
+            width="600"
+            min-height="600"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-list-item text v-bind="attrs" v-on="on" link>
@@ -35,6 +35,27 @@
             </template>
             <create-listing-profile></create-listing-profile>
           </v-dialog>
+          <v-dialog v-model="dialogAssignUsersToRooms" width="800" height="600">
+            <template v-slot:activator="{ on, attrs }">
+              <v-list-item text v-bind="attrs" v-on="on">
+                <v-icon class="px-2" color="accent">mdi-file-cog</v-icon> Assign
+                Users to Rooms
+              </v-list-item>
+            </template>
+            <UploadOrganizationUsersRooms
+              @closeDialog="closeDialog('dialogAssignUsersToRooms')"
+            ></UploadOrganizationUsersRooms>
+          </v-dialog>
+          <v-list-item
+            text
+            v-bind="attrs"
+            v-on="on"
+            link
+            to="/organization-payments"
+          >
+            <v-icon class="px-2" color="accent">mdi-file-cog</v-icon> Manage
+            Payments
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-toolbar>
@@ -44,13 +65,20 @@
 <script>
 import CreateListingProfile from "./forms/CreateListingProfile.vue";
 import Bookings from "./Bookings.vue";
+import UploadOrganizationUsersRooms from "./forms/UploadOrganizationUsersRooms.vue";
 export default {
-  components: { CreateListingProfile, Bookings },
+  components: { CreateListingProfile, Bookings, UploadOrganizationUsersRooms },
   data() {
     return {
       dialogShowTeacherBooking: false,
       dialogCreateListingProfile: false,
+      dialogAssignUsersToRooms: false,
     };
+  },
+  methods: {
+    closeDialog(dialog) {
+      this[dialog] = false;
+    },
   },
 };
 </script>

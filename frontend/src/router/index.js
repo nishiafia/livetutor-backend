@@ -24,11 +24,10 @@ let router = new Router({
   routes: configRoutes(),
 });
 router.beforeEach((to, from, next) => {
-
-  store.dispatch('user/validate').then(() => {
+  store.dispatch("user/validate").then(() => {
     if (!["Login", "Register"].includes(to.name) && !store.getters["user/userIsAuthenticated"])
       next({ name: "Login", query: { redirect: to.fullPath } });
-    else next()
+    else next();
   });
 });
 
@@ -36,12 +35,11 @@ export default router;
 
 function configRoutes() {
   return [
-    // {
-    //   path: "/student",
-    //   name: "studentprofile",
-    //   component: StudentProfile,
-    //   meta: { requiresUser: true },
-    // },
+    {
+      path: "/organization-payments",
+      name: "OrganizationPayments",
+      component: () => import("@/pages/OrganizationPayments"),
+    },
     {
       path: "/payment",
       name: "payment",

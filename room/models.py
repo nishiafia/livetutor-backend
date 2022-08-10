@@ -5,6 +5,17 @@ from livetutor.models import MetaFields
 from users.models import User
 
 
+class RoomUserRole:
+    STUDENT = 'student'
+    TEACHER = 'teacher'
+    ADMIN = 'admin'
+    ROLE_CHOICES = (
+        (STUDENT, 'Student'),
+        (TEACHER, 'Teacher'),
+        (ADMIN, 'Admin'),
+    )
+
+
 class RoomManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_active=True)
@@ -33,9 +44,12 @@ class RoomUser(MetaFields):
     This is a model that represents a user's relationship with a room.
     Roomuser with a role admin is the owner of the room.
     """
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    user = models.ForeignKey('users.user', on_delete=models.CASCADE)
-    role = models.CharField(max_length=10, default='member')
+    room = models.ForeignKey(
+        Room, on_delete=models.CASCADE, related_name='roomuser')
+    user = models.ForeignKey(
+        'users.user', on_delete=models.CASCADE, related_name='roomuser')
+    role = models.CharField(
+        max_length=10, choices=RoomUserRole.ROLE_CHOICES, default=RoomUserRole.STUDENT)
     has_joined = models.BooleanField(default=False)
 
     class Meta:

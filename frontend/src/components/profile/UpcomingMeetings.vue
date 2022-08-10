@@ -1,8 +1,8 @@
 <template>
   <v-card>
-    <v-app-bar dark color="third">
-      <v-app-bar-title>Today's Upcoming Meetings</v-app-bar-title>
-    </v-app-bar>
+    <v-toolbar dark color="secondary" flat>
+      <v-toolbar-title>Upcoming Meetings</v-toolbar-title>
+    </v-toolbar>
     <v-timeline dense v-if="todays_upcoming_meetings.length">
       <v-timeline-item
         right

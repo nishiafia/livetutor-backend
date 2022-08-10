@@ -33,8 +33,16 @@
           <v-card-title
             >{{ cls.name }}
 
-            <v-chip class="mx-1" small color="#FFC900" dark v-if="cls.is_author"
-              >Your Room</v-chip
+            <v-chip class="mx-1" small color="#33cc33" dark v-if="cls.is_author"
+              >Owner</v-chip
+            >
+            <v-chip
+              class="mx-1"
+              small
+              color="#ff6666"
+              dark
+              v-if="cls.is_teacher"
+              >Teacher</v-chip
             >
             <v-chip
               v-if="cls.organization"

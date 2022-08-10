@@ -6,6 +6,7 @@ export default {
     access: localStorage.getItem("access") || null,
     refresh: localStorage.getItem("refresh") || null,
     username: "",
+    name: "",
     authenticated: false,
   },
   actions: {
@@ -33,7 +34,7 @@ export default {
         .post("users/verify/", null, {
           headers: { Authorization: `Bearer ${state.access}` },
         })
-        .then((res) => commit("loadUser", { username: res.data.username }))
+        .then((res) => commit("loadUser", { username: res.data.username, name: res.data.name }))
         .then(() => (api.defaults.headers["Authorization"] = `Bearer ${state.access}`))
         .then(() => {
           dispatch("assignments/get", null, { root: true });
@@ -57,9 +58,10 @@ export default {
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
     },
-    loadUser(state, { username }) {
+    loadUser(state, { username, name }) {
       state.username = username;
       state.authenticated = true;
+      state.name = name
     },
     clear(state) {
       state.username = "";
@@ -77,5 +79,6 @@ export default {
     getUsername: (state) => state.username,
     userIsAuthenticated: (state) => state.authenticated,
     getUserId: (state) => state.id,
+    getName: state => state.name
   },
 };

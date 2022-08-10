@@ -27,9 +27,6 @@ class CreateObjectPermission(permissions.BasePermission):
 
 class RoomUpdatePermission(permissions.DjangoObjectPermissions):
     def has_object_permission(self, request, view, obj):
-        print(obj)
-        # if request.method == 'GET':
-        #     return request.user.has_perm(f'(view_{obj._meta.model_name}', obj)
         if request.method == 'DELETE':
             return request.user.has_perm('delete_room', obj.room)
         if request.method == 'PUT':
@@ -41,10 +38,10 @@ class RoomUpdatePermission(permissions.DjangoObjectPermissions):
 class RoomAdminPermission(permissions.DjangoObjectPermissions):
     def has_permission(self, request, view):
         if request.method == 'POST':
+            if view.action == 'assign_bulk_room_users':
+                return True
             try:
-                print('here in permission')
                 if Room.objects.filter(pk=request.data['room'], author=request.user).exists():
-                    print('has_perm')
                     return True
             except:
                 return False
@@ -55,13 +52,6 @@ class RoomAdminPermission(permissions.DjangoObjectPermissions):
         if request.method in ['POST', 'PUT', 'DELETE', ]:
             try:
                 if Room.objects.filter(pk=obj.room.id, author=request.user, ).exists():
-                    print('here in obj permission')
                     return True
             except:
                 return False
-                # try:
-                #     obj.room.admin_user == request.user
-
-                #     return True
-                # except:
-                #     return False

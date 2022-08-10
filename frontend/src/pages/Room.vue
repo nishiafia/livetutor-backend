@@ -31,7 +31,7 @@ import TabsExams from "../components/profile/TabsExams.vue";
 import TabsNotes from "../components/profile/TabsNotes.vue";
 import Activities from "../components/room/Activities.vue";
 import ClassDescription from "../components/room/ClassDescription.vue";
-import EnrolledStudents from "../components/room/EnrolledStudents.vue";
+import EnrolledUsers from "../components/room/EnrolledUsers.vue";
 import UserTabs from "../components/profile/UserTabs.vue";
 export default {
   name: "Room",
@@ -41,7 +41,7 @@ export default {
     TabsExams,
     Activities,
     ClassDescription,
-    EnrolledStudents,
+    EnrolledUsers,
     TabsNotes,
     UserTabs,
   },

@@ -8,8 +8,8 @@ class RoomAdminOnly(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.method in ['POST', 'DELETE', 'PUT']:
-
             if RoomUser.objects.filter(room=obj, user=request.user, role='admin').exists():
                 return True
             else:
                 return False
+        
