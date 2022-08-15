@@ -36,9 +36,23 @@ export default router;
 function configRoutes() {
   return [
     {
-      path: "/organization-payments",
-      name: "OrganizationPayments",
-      component: () => import("@/pages/OrganizationPayments"),
+      path: "/manage-organization",
+      name: "ManageOrganization",
+      component: () => import("@/pages/ManageOrganization"),
+      children: [
+        {
+          path: "/add-organization-users",
+          name: "AddOrganizationUsers",
+          component: () =>
+            import("@/components/organization/create/UploadOrganizationUsersRooms.vue"),
+        },
+      ],
+    },
+
+    {
+      path: "/organization-users",
+      name: "OrganizationUsers",
+      component: () => import("@/pages/OrganizationUsers"),
     },
     {
       path: "/payment",

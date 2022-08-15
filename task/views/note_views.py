@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from livetutor.permissions import RoomAdminPermission
 from rest_framework import parsers, response, status, viewsets
 from rest_framework_extensions.mixins import NestedViewSetMixin
 from task.models import *
+from task.permissions import RoomAuthorOrTeacherOnly
 from task.serializers.note_serializers import *
 
 
 class NoteViewset(NestedViewSetMixin, viewsets.ModelViewSet):
-    permission_classes = [RoomAdminPermission]
+    permission_classes = [RoomAuthorOrTeacherOnly]
     parser_classes = (parsers.MultiPartParser, parsers.FormParser)
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
@@ -28,6 +28,7 @@ class NoteViewset(NestedViewSetMixin, viewsets.ModelViewSet):
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class NoteCommentViewset(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = NoteCommentSerializer

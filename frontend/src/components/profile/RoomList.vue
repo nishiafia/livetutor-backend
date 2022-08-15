@@ -29,6 +29,7 @@
           elevation="3"
           outlined
           height="150"
+          :to="{ name: 'room', params: { id: cls.id } }"
         >
           <v-card-title
             >{{ cls.name }}
@@ -61,11 +62,13 @@
               v-if="cls.trial"
               >Trial Room</v-chip
             >
-            <v-btn :to="{ name: 'room', params: { id: cls.id } }" icon>
-              <v-icon> mdi-call-made </v-icon>
-            </v-btn>
           </v-card-title>
-          <v-card-subtitle>{{ cls.code }}</v-card-subtitle>
+          <v-card-subtitle
+            >{{ cls.code }}
+            <v-btn icon v-on:click.prevent="copyText(cls.code)">
+              <v-icon small> mdi-content-copy </v-icon>
+            </v-btn></v-card-subtitle
+          >
           <v-card-text v-if="cls.categories.length">
             Category:
             <v-chip
@@ -83,6 +86,7 @@
         <v-card-text class="text-center text-h7">No Room Found</v-card-text>
       </v-col>
     </v-row>
+    <v-snackbar v-model="showCopied" timeout="1000">Copied</v-snackbar>
   </v-card>
 </template>
 
@@ -93,6 +97,7 @@ export default {
   components: { NewRoom, JoinRoom },
   data() {
     return {
+      showCopied: false,
       dialog_new_class: false,
       dialog_join_class: false,
     };
@@ -111,6 +116,12 @@ export default {
     },
     join_class_close_dialog() {
       this.dialog_join_class = false;
+    },
+    copyText(class_code) {
+      if (class_code !== undefined) {
+        navigator.clipboard.writeText(class_code);
+        this.showCopied = true;
+      }
     },
   },
 };

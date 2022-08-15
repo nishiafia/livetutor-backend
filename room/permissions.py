@@ -12,4 +12,16 @@ class RoomAdminOnly(permissions.BasePermission):
                 return True
             else:
                 return False
-        
+
+
+class OwnerOrTeacher(permissions.BasePermission):
+    '''only the author of the room or branch admin for this room or the super admin of the organization can create,update,delete'''
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in ['POST', 'DELETE', 'PUT']:
+            if RoomUser.objects.filter(room=obj, author=request.user).exists():
+                return True
+            elif RoomUser.objects.filter(room=obj, user=request.user, role='teacher').exists():
+                return True
+            else:
+                return False

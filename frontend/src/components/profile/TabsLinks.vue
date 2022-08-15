@@ -29,7 +29,12 @@
       </template>
     </v-data-table>
     <v-row align="center" justify="center" class="pa-2">
-      <v-dialog v-model="dialog_new_exam" width="700" persistent>
+      <v-dialog
+        v-model="dialog_new_exam"
+        width="700"
+        persistent
+        v-if="is_owner || is_teacher"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-btn outlined v-bind="attrs" v-on="on" class="pa-2 ma-2"
             >New Link
@@ -57,7 +62,7 @@ import NewLink from "../views/creation/NewLink.vue";
 import ViewAllForTabItem from "./ViewAllForTabItem.vue";
 export default {
   components: { NewLink, ViewAllForTabItem },
-  props: ["class_id"],
+  props: ["class_id", "is_teacher", "is_owner"],
   data() {
     return {
       dialog_view_all: false,

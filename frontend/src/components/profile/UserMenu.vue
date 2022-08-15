@@ -35,26 +35,26 @@
             </template>
             <create-listing-profile></create-listing-profile>
           </v-dialog>
-          <v-dialog v-model="dialogAssignUsersToRooms" width="800" height="600">
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item text v-bind="attrs" v-on="on">
-                <v-icon class="px-2" color="accent">mdi-file-cog</v-icon> Assign
-                Users to Rooms
-              </v-list-item>
-            </template>
-            <UploadOrganizationUsersRooms
-              @closeDialog="closeDialog('dialogAssignUsersToRooms')"
-            ></UploadOrganizationUsersRooms>
-          </v-dialog>
+
           <v-list-item
             text
             v-bind="attrs"
             v-on="on"
             link
-            to="/organization-payments"
+            to="/organization-users"
           >
             <v-icon class="px-2" color="accent">mdi-file-cog</v-icon> Manage
-            Payments
+            Organization Users
+          </v-list-item>
+          <v-list-item
+            text
+            v-bind="attrs"
+            v-on="on"
+            link
+            to="/manage-organization"
+          >
+            <v-icon class="px-2" color="accent">mdi-file-cog</v-icon> Manage
+            Organization
           </v-list-item>
         </v-list>
       </v-menu>
@@ -65,9 +65,9 @@
 <script>
 import CreateListingProfile from "./forms/CreateListingProfile.vue";
 import Bookings from "./Bookings.vue";
-import UploadOrganizationUsersRooms from "./forms/UploadOrganizationUsersRooms.vue";
+
 export default {
-  components: { CreateListingProfile, Bookings, UploadOrganizationUsersRooms },
+  components: { CreateListingProfile, Bookings },
   data() {
     return {
       dialogShowTeacherBooking: false,

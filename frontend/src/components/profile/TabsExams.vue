@@ -29,13 +29,26 @@
       </template>
     </v-data-table>
     <v-row align="center" justify="center" class="pa-2">
-      <v-dialog v-model="dialog_new_exam" width="700" persistent>
+      <v-dialog
+        v-model="dialog_new_exam"
+        width="700"
+        persistent
+        v-if="is_owner || is_teacher"
+      >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn outlined v-bind="attrs" v-on="on" class="pa-2 ma-2">New Exam </v-btn>
+          <v-btn outlined v-bind="attrs" v-on="on" class="pa-2 ma-2"
+            >New Exam
+          </v-btn>
         </template>
-        <new-exam v-bind:class_id="class_id" @closeDialog="new_exam_close_dialog"> </new-exam>
+        <new-exam
+          v-bind:class_id="class_id"
+          @closeDialog="new_exam_close_dialog"
+        >
+        </new-exam>
       </v-dialog>
-      <v-btn class="pa-2 ma-2" outlined @click="dialog_view_all = true">View All</v-btn>
+      <v-btn class="pa-2 ma-2" outlined @click="dialog_view_all = true"
+        >View All</v-btn
+      >
       <v-dialog v-model="dialog_view_all" max-width="1000px">
         <view-all-for-tab-item
           :headers="headers"
@@ -52,7 +65,7 @@ import NewExam from "../views/creation/NewExam.vue";
 import ViewAllForTabItem from "./ViewAllForTabItem.vue";
 export default {
   components: { NewExam, ViewAllForTabItem },
-  props: ["class_id"],
+  props: ["class_id", "is_owner", "is_teacher"],
   data() {
     return {
       dialog_view_all: false,

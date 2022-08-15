@@ -12,6 +12,7 @@
       :server-items-length="pagination.count"
       @update:items-per-page="updateItemsPerPage"
       @update:page="updatePage"
+      :show-select="showSelect"
     >
       <template #top>
         <v-row>
@@ -49,6 +50,10 @@
 <script>
 export default {
   props: {
+    showSelect: {
+      type: Boolean,
+      default: false,
+    },
     showExport: {
       type: Boolean,
       default: false,

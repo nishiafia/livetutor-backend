@@ -14,27 +14,6 @@
         hide-details="auto"
         :rules="$requiredRules"
       ></v-text-field>
-
-      <!-- <v-col>
-          <v-select
-            v-if="!class_id"
-            :rules="$requiredRules"
-            v-model="selected_class"
-            label="Select Class"
-            :items="classes"
-            item-text="name"
-            item-value="id"
-            persistent-hint
-            :hint="`Room: ${selected_class.name || 'Not Selected'} | Section: ${
-              selected_class.section || 'Not Selected'
-            } | Session: ${selected_class.session || 'Not Selected'}`"
-            return-object
-          >
-            <template v-slot:selection="{ item }">{{ item.name }} </template>
-            <template v-slot:item="{ item }">{{ item.name }} </template>
-          </v-select>
-        </v-col> -->
-
       <v-text-field v-model="details" label="Short Description"></v-text-field>
 
       <v-text-field

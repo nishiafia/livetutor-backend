@@ -41,7 +41,12 @@
       }}</template>
     </v-data-table>
     <v-row align="center" justify="center" class="pa-2">
-      <v-dialog v-model="dialog_new_assignment" persistent max-width="700px">
+      <v-dialog
+        v-model="dialog_new_assignment"
+        persistent
+        max-width="700px"
+        v-if="is_owner || is_teacher"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-btn outlined v-bind="attrs" v-on="on" class="pa-2 ma-2"
             >New Assignment
@@ -75,7 +80,7 @@ import NewAssignment from "../views/creation/NewAssignment.vue";
 import ViewAllForTabItem from "./ViewAllForTabItem.vue";
 export default {
   components: { NewAssignment, ViewAllForTabItem },
-  props: ["class_id"],
+  props: ["class_id", "is_owner", "is_teacher"],
   data() {
     return {
       dialog_view_all: false,

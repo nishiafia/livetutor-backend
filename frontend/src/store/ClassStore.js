@@ -35,5 +35,7 @@ export default {
     get_user_owned_classes: (state) => state.classes.filter((cls) => cls.is_author === true),
     is_class_owner: (state) => (class_id) =>
       state.classes.find((cls) => cls.id == class_id).is_author,
+    is_class_teacher: (state) => (class_id) =>
+      state.classes.find((cls) => cls.id == class_id).is_teacher,
   },
 };

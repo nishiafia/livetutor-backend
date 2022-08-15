@@ -142,7 +142,6 @@
 </template>
 
 <script>
-import api from "@/services/api";
 import Thumbnail from "@/components/global/Thumbnail.vue";
 export default {
   components: { Thumbnail },

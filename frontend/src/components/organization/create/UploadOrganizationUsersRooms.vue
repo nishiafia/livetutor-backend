@@ -9,6 +9,7 @@
     </v-toolbar>
 
     <v-file-input
+      class="ma-4"
       v-model="user_room_csv"
       label="Upload Users-Rooms CSV"
       @change="loadCSV"
@@ -20,7 +21,7 @@
       </template>
     </v-file-input>
     <v-divider></v-divider>
-    <v-data-table :headers="headers" :items="items"></v-data-table>
+    <v-data-table class="ma-4" :headers="headers" :items="items"></v-data-table>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="primary" @click="assignRoomUsers">
