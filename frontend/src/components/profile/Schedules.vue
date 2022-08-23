@@ -80,7 +80,15 @@
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
 
-              <v-btn icon to="/meeting">
+              <v-btn
+                icon
+                :to="{
+                  name: 'meeting',
+                  params: {
+                    roomName: selectedEvent.lobby_name,
+                  },
+                }"
+              >
                 <v-icon>mdi-arrow-top-right</v-icon>
               </v-btn>
             </v-toolbar>

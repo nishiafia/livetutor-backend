@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from livetutor.models import MetaFields
 
@@ -8,6 +10,8 @@ class Meeting(MetaFields):
     description = models.TextField(null=True, blank=True)
     start_date_time = models.DateTimeField()
     end_date_time = models.DateTimeField()
+    lobby_name = models.CharField(
+        max_length=255, default=uuid.uuid4().hex[:8])
 
 
 class TrialMeeting(MetaFields):

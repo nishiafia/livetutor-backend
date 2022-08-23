@@ -36,6 +36,12 @@ export default router;
 function configRoutes() {
   return [
     {
+      path: "/meeting",
+      name: "meeting",
+      props: true,
+      component: () => import("@/components/global/JitsiMeet"),
+    },
+    {
       path: "/manage-organization",
       name: "ManageOrganization",
       component: () => import("@/pages/ManageOrganization"),
