@@ -72,9 +72,9 @@
           >
         </v-card> </v-col
       > -->
-      <v-col cols="12" md="6">
+      <!-- <v-col cols="12" md="6">
         <v-card height="120"> </v-card>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-card>
 </template>

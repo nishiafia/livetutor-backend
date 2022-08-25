@@ -1,7 +1,7 @@
 <template>
   <v-form ref="phoneFieldForm">
     <v-row class="d-flex-inline">
-      <v-col cols="5" lg="3">
+      <v-col cols="5" sm="3">
         <v-select
           :items="countries"
           v-model="countryCode"
@@ -21,8 +21,12 @@
           </template>
         </v-select>
       </v-col>
-      <v-col cols="7" lg="9" class="mx-md-0 pl-md-0">
-        <v-text-field @input="handleInput" :rules="phoneRules"></v-text-field>
+      <v-col cols="7" sm="9" class="mx-md-0 pl-md-0">
+        <v-text-field
+          @input="handleInput"
+          :rules="phoneRules"
+          label="Mobile"
+        ></v-text-field>
       </v-col> </v-row
   ></v-form>
 </template>
@@ -64,6 +68,9 @@ export default {
     },
     handleInput(e) {
       this.$emit("input", `${this.countryCode}${e}`);
+    },
+    validate() {
+      return this.$refs.phoneFieldForm.validate();
     },
   },
 };

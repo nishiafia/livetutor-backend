@@ -3,8 +3,13 @@
     <v-row align="center" justify="center">
       <v-col cols="12" md="4">
         <v-card class="mx-4 pa-4">
-          <v-form ref="form" v-if="!otp_verified">
-            <PhoneField v-model="mobile" :rules="$requiredRules"></PhoneField>
+          <v-form
+            @submit.prevent="check_mobile()"
+            ref="form1"
+            v-show="!otp_verified"
+            v-model="valid_form1"
+          >
+            <PhoneField ref="phoneField" v-model="mobile"></PhoneField>
             <v-alert type="info" class="d-flex align-items-center">
               Please save the below pin code for your login
             </v-alert>
@@ -13,9 +18,7 @@
               :rules="$requiredRules"
               v-model="password"
             ></v-text-field>
-            <v-btn @click="check_mobile()" color="success" block
-              >Continue</v-btn
-            >
+            <v-btn type="submit" color="success" block>Continue</v-btn>
           </v-form>
           <v-form ref="form2" v-show="otp_verified">
             <v-text-field
@@ -40,6 +43,15 @@
             >
           </v-form>
         </v-card>
+        <v-snackbar
+          :timeout="5000"
+          v-model="snackbar"
+          :color="snackbar_color"
+          bottom
+          left
+        >
+          {{ snackbar_text }}
+        </v-snackbar>
       </v-col>
     </v-row>
   </v-container>
@@ -55,7 +67,11 @@ export default {
   name: "Register",
   data() {
     return {
-      form: "",
+      snackbar: false,
+      snackbar_text: "",
+      snackbar_color: "",
+      valid_form1: true,
+      form1: "",
       form2: "",
       name: "",
       mobile: "",
@@ -72,7 +88,7 @@ export default {
   },
   methods: {
     check_mobile() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.phoneField.validate() && this.$refs.form1.validate()) {
         this.otp_verified = true;
         this.$refs.form2.resetValidation();
       }
@@ -100,13 +116,16 @@ export default {
           )
           .then(() =>
             this.$store.dispatch("user/login", {
-              phone: this.mobile.replace("-", ""),
+              phone: this.mobile,
               password: this.password,
             })
           )
           .then(() => this.$router.push("/profile"))
           .catch((err) => {
             console.log(err);
+            this.snackbar = true;
+            this.snackbar_text = err;
+            this.snackbar_color = "red lighten-2";
           });
       }
     },

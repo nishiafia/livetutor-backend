@@ -23,11 +23,14 @@ export default {
       });
     },
     register({ commit, dispatch }, { phone, password }) {
-      return new Promise((resolve, reject) => {
-        return api.post("/register/", { phone: phone, password: password }).then(() => {
-          dispatch("login", { phone: phone, password: password }).then(() => resolve());
-        });
-      }).catch((err) => reject(err));
+      return new Promise((resolve, reject) =>
+        api
+          .post("/register/", { phone: phone, password: password })
+          .then(() => dispatch("login", { phone: phone, password: password }).then(() => resolve()))
+          .catch((err) => {
+            reject(err.data);
+          })
+      );
     },
     validate({ state, commit, dispatch }) {
       return api
@@ -61,7 +64,7 @@ export default {
     loadUser(state, { username, name }) {
       state.username = username;
       state.authenticated = true;
-      state.name = name
+      state.name = name;
     },
     clear(state) {
       state.username = "";
@@ -79,6 +82,6 @@ export default {
     getUsername: (state) => state.username,
     userIsAuthenticated: (state) => state.authenticated,
     getUserId: (state) => state.id,
-    getName: state => state.name
+    getName: (state) => state.name,
   },
 };

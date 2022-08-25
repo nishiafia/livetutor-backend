@@ -45,6 +45,8 @@ export default {
       const options = {
         roomName: this.roomName,
         parentNode: this.$refs.jitsiContainer,
+        startWithAudioMuted: true,
+        startWithVideoMuted: true,
       };
 
       this.meet = new window.JitsiMeetExternalAPI(

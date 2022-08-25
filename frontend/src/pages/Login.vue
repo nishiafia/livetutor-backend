@@ -1,14 +1,14 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-      <v-col cols="12" md="4">
+      <v-col cols="12" lg="4">
         <v-card elevation="2" class="pa-4" min-height="320">
-          <v-form @submit.prevent="login" ref="form">
+          <v-form @submit.prevent="login" ref="form" v-model="valid">
             <v-card-title>Login</v-card-title>
             <v-card-subtitle class="text-muted"
               >Sign In to your account</v-card-subtitle
             >
-            <PhoneField v-model="mobile"></PhoneField>
+            <PhoneField v-model="mobile" ref="phoneField"></PhoneField>
             <!-- <vue-tel-input-vuetify
               v-model="mobile"
               :rules="$phoneRules"
@@ -24,7 +24,7 @@
             >
             </v-text-field>
             <v-row>
-              <v-col cols="6">
+              <v-col>
                 <v-btn type="submit" outlined color="primary lighten-2"
                   >Login</v-btn
                 >
@@ -36,7 +36,7 @@
           </v-form>
         </v-card>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col cols="12" lg="4">
         <v-card
           dark
           elevation="2"
@@ -72,6 +72,7 @@ export default {
       password: "",
       showMessage: false,
       message: "",
+      valid: true,
     };
   },
   methods: {
@@ -79,7 +80,9 @@ export default {
       this.$router.push({ path: "register" });
     },
     login() {
-      if (this.$refs.form.validate()) {
+      this.$refs.form.validate();
+      this.$refs.phoneField.validate();
+      if (this.valid) {
         this.$store
           .dispatch("user/login", {
             phone: this.mobile.replace("-", ""),
