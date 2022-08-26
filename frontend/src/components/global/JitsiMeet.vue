@@ -11,6 +11,10 @@ export default {
       type: String,
       default: "openLounge",
     },
+    jwt: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -18,6 +22,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.jwt);
     this.loadJitsiScript().then(() => {
       this.loading = true;
       this.initJitsi();
@@ -44,6 +49,7 @@ export default {
     initJitsi() {
       const options = {
         roomName: this.roomName,
+        jwt: this.jwt,
         parentNode: this.$refs.jitsiContainer,
         startWithAudioMuted: true,
         startWithVideoMuted: true,

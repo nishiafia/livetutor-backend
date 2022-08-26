@@ -37,5 +37,9 @@ export default {
       state.classes.find((cls) => cls.id == class_id).is_author,
     is_class_teacher: (state) => (class_id) =>
       state.classes.find((cls) => cls.id == class_id).is_teacher,
+    is_class_owner_or_teacher: (state) => (class_id) => {
+      const cls = state.classes.find((cls) => cls.id == class_id);
+      return cls.is_teacher || cls.is_author;
+    },
   },
 };

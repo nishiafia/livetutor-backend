@@ -86,6 +86,7 @@
                   name: 'meeting',
                   params: {
                     roomName: selectedEvent.lobby_name,
+                    jwt: meetingjwt,
                   },
                 }"
               >
@@ -121,6 +122,7 @@
 </template>
 
 <script>
+import jwtmaker from "../../services/jwtmaker";
 import NewMeeting from "../views/creation/NewMeeting.vue";
 export default {
   components: { NewMeeting },
@@ -150,8 +152,38 @@ export default {
     this.class = this.$store.getters["classes/get_current_class_info"](
       this.class_id
     );
+    console.log(
+      this.$store.getters["classes/is_class_owner_or_teacher"](
+        "53ddcf2512b04c01b9c78b4561a47c8e"
+      )
+    );
   },
   computed: {
+    affiliation() {
+      if (Object.entries(this.selectedEvent).length > 0) {
+        return this.$store.getters["classes/is_class_owner_or_teacher"](
+          this.selectedEvent.room
+        )
+          ? "owner"
+          : "member";
+      }
+      return "";
+    },
+    meetingjwt() {
+      return jwtmaker({
+        context: {
+          user: {
+            id: this.$store.getters["user/getUserId"],
+            name: this.$store.getters["user/getName"],
+            email: this.$store.getters["user/getEmail"],
+            affiliation: this.affiliation,
+          },
+        },
+        sub: "*",
+        room: "*",
+      });
+    },
+
     meetings() {
       return this.class_id
         ? this.$store.getters["meetings/meetings_for_current_class"](

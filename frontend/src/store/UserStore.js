@@ -83,5 +83,6 @@ export default {
     userIsAuthenticated: (state) => state.authenticated,
     getUserId: (state) => state.id,
     getName: (state) => state.name,
+    getEmail: (state) => state.email,
   },
 };

@@ -1,0 +1,15 @@
+webpackHotUpdate(1,{
+
+/***/ "./src/services/jwtmaker.js":
+/*!**********************************!*\
+  !*** ./src/services/jwtmaker.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(function(Buffer) {var crypto = __webpack_require__(/*! crypto */ \"./node_modules/crypto-browserify/index.js\");\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (function (payload_params) {\n  var header = {\n    alg: \"HS256\",\n    typ: \"JWT\"\n  };\n  var payload = {\n    payload_params: payload_params,\n    aud: \"3C68F1C9B375C34C2FB4D3CF86205254\"\n  };\n\n  var _header = Buffer.from(JSON.stringify(header)).toString(\"base64\");\n\n  var _payload = Buffer.from(JSON.stringify(payload)).toString(\"base64\");\n\n  var signature = _header + \".\" + _payload;\n  var secret = \"FB13E8E76E8BA8ECEE6CFB955B40D472\";\n\n  var _signature = crypto.createHmac(\"sha256\", secret).update(signature).digest(\"base64\").replace(/\\+/g, \"-\").replace(/\\//g, \"_\").replace(/=+$/, \"\");\n\n  return signature + \".\" + _signature;\n});\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/buffer/index.js */ \"./node_modules/buffer/index.js\").Buffer))//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvc2VydmljZXMvand0bWFrZXIuanMuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zcmMvc2VydmljZXMvand0bWFrZXIuanM/Y2IxYiJdLCJzb3VyY2VzQ29udGVudCI6WyJjb25zdCBjcnlwdG8gPSByZXF1aXJlKFwiY3J5cHRvXCIpO1xuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiAocGF5bG9hZF9wYXJhbXMpIHtcbiAgY29uc3QgaGVhZGVyID0ge1xuICAgIGFsZzogXCJIUzI1NlwiLFxuICAgIHR5cDogXCJKV1RcIixcbiAgfTtcbiAgY29uc3QgcGF5bG9hZCA9IHsgcGF5bG9hZF9wYXJhbXMsIGF1ZDogXCIzQzY4RjFDOUIzNzVDMzRDMkZCNEQzQ0Y4NjIwNTI1NFwiIH07XG4gIGNvbnN0IF9oZWFkZXIgPSBCdWZmZXIuZnJvbShKU09OLnN0cmluZ2lmeShoZWFkZXIpKS50b1N0cmluZyhcImJhc2U2NFwiKTtcbiAgY29uc3QgX3BheWxvYWQgPSBCdWZmZXIuZnJvbShKU09OLnN0cmluZ2lmeShwYXlsb2FkKSkudG9TdHJpbmcoXCJiYXNlNjRcIik7XG4gIGNvbnN0IHNpZ25hdHVyZSA9IF9oZWFkZXIgKyBcIi5cIiArIF9wYXlsb2FkO1xuICBjb25zdCBzZWNyZXQgPSBcIkZCMTNFOEU3NkU4QkE4RUNFRTZDRkI5NTVCNDBENDcyXCI7XG4gIGNvbnN0IF9zaWduYXR1cmUgPSBjcnlwdG9cbiAgICAuY3JlYXRlSG1hYyhcInNoYTI1NlwiLCBzZWNyZXQpXG4gICAgLnVwZGF0ZShzaWduYXR1cmUpXG4gICAgLmRpZ2VzdChcImJhc2U2NFwiKVxuICAgIC5yZXBsYWNlKC9cXCsvZywgXCItXCIpXG4gICAgLnJlcGxhY2UoL1xcLy9nLCBcIl9cIilcbiAgICAucmVwbGFjZSgvPSskLywgXCJcIik7XG5cbiAgcmV0dXJuIHNpZ25hdHVyZSArIFwiLlwiICsgX3NpZ25hdHVyZTtcbn1cbiJdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFGQTtBQUlBO0FBQUE7QUFBQTtBQUFBO0FBQ0E7QUFBQTtBQUNBO0FBQUE7QUFDQTtBQUFBO0FBQ0E7QUFDQTtBQUFBO0FBQ0E7QUFPQTtBQUNBO0EiLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./src/services/jwtmaker.js\n");
+
+/***/ })
+
+})
