@@ -88,17 +88,13 @@ WSGI_APPLICATION = 'livetutor.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "livetutor",
+        "SERVER": "localhost",
+        "USER": "livetutor",
+        "PASSWORD": "livetutor",
     }
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
-    #     "NAME": "livetutor",
-    #     "SERVER": "localhost",
-    #     "USER": "postgres",
-    #     "PASSWORD": "root",
-    # }
 }
 
 
@@ -148,7 +144,7 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'users.user'
 STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = [os.path.join(FRONTEND_ROOT, 'static'), ]
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
