@@ -16,7 +16,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-FRONTEND_ROOT = os.path.join(BASE_DIR, 'frontend', 'dist')
+# FRONTEND_ROOT = os.path.join(BASE_DIR, 'frontend', 'dist')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -68,7 +68,7 @@ ROOT_URLCONF = 'livetutor.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(FRONTEND_ROOT)],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,7 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'users.user'
 STATIC_ROOT = 'staticfiles'
-STATICFILES_DIRS = [os.path.join(FRONTEND_ROOT, 'static'), ]
+STATICFILES_DIRS = [os.path.join('/var/www', 'static'), ]
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAMEWORK = {
