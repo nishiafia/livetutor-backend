@@ -11,8 +11,11 @@ class Meeting(MetaFields):
     start_date_time = models.DateTimeField()
     end_date_time = models.DateTimeField()
     lobby_name = models.CharField(
-        max_length=255, default=uuid.uuid4().hex[:8])
+        max_length=255,null=True, blank=True)
 
+    def save(self,**kwargs) -> None:
+        self.lobby_name = uuid.uuid4().hex[:8]
+        return super().save()
 
 class TrialMeeting(MetaFields):
     """

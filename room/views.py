@@ -33,7 +33,7 @@ class RoomViewset(NestedViewSetMixin, viewsets.ModelViewSet, mixins.ExportMixin)
             'author': request.user.id
         }
         serializer = self.get_serializer(
-            data=data)
+            data=data, context={'user_id': request.user.id})
         if serializer.is_valid():
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
