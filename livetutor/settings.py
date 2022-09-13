@@ -14,6 +14,9 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # FRONTEND_ROOT = os.path.join(BASE_DIR, 'frontend', 'dist')
@@ -25,9 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-yh#+6gq_#5&wm!i6@#au-7e$0190@n6)_59ee$5f0yv+f1#!)x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+DEBUG = eval(os.getenv("DEBUG", 'False'))
+ALLOWED_HOSTS = [
+    "apps.meetingme.live",
+] if not DEBUG else ["*"]
 
 
 # Application definition
@@ -39,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_seed', 'rest_framework',
+    'rest_framework',
     'users',
     'room',
     'payment',
@@ -90,10 +94,10 @@ WSGI_APPLICATION = 'livetutor.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "livetutor",
-        "SERVER": "localhost",
-        "USER": "livetutor",
-        "PASSWORD": "livetutor",
+        "NAME": os.getenv("DB_NAME"),
+        "HOST": os.getenv("DB_HOST"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
     }
 }
 
@@ -128,7 +132,10 @@ USE_I18N = True
 
 USE_TZ = True
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://apps.meetingme.live",
+]
+CORS_ALLOW_ALL_ORIGINS = True if DEBUG else False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -139,11 +146,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'users.user'
-STATIC_ROOT = 'staticfiles'
-STATICFILES_DIRS = [os.path.join('/var/www', 'static'), ]
+STATIC_ROOT =  os.path.join(BASE_DIR, "staticfiles") if DEBUG == True else "/var/www/livetutor/" 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAMEWORK = {
