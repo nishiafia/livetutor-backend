@@ -9,6 +9,7 @@
 - Install python=>3.7
 - Install Pip typing `py -m ensurepip` in terminal or install directly from https://pypi.org/project/pip/
 - `pip install -r requirements.txt ` to install required packages.
+- copy '.env.example' to '.env'
 - `py manage.py runserver` to run the app
 - go to `localhost:8000`
 -
