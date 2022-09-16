@@ -10,8 +10,8 @@ from .models import Room, RoomUser, RoomUserRole
 
 
 class RoomSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(
-        many=True, required=False)
+    # categories = CategorySerializer(
+    #     many=True, required=False)
     is_author = serializers.BooleanField(read_only=True, default=False)
     is_teacher = serializers.BooleanField(read_only=True, default=False)
 
@@ -25,12 +25,13 @@ class RoomSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
+        data['categories'] = instance.categories.all().values_list('title', flat=True)
         if instance.author.id == self.context['user_id']:
             data['is_author'] = True
         if RoomUser.objects.filter(room=instance, user=self.context['user_id'], role='teacher').exists():
             data['is_teacher'] = True
         return data
-
+    
 
 class RoomUserSerializer(serializers.ModelSerializer):
     class Meta:

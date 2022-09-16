@@ -1,3 +1,5 @@
+from re import L
+
 from django.shortcuts import render
 from rest_framework import parsers, response, status, viewsets
 from rest_framework_extensions.mixins import NestedViewSetMixin
@@ -7,8 +9,8 @@ from task.serializers.note_serializers import *
 
 
 class NoteViewset(NestedViewSetMixin, viewsets.ModelViewSet):
-    permission_classes = [RoomAuthorOrTeacherOnly]
-    parser_classes = (parsers.MultiPartParser, parsers.FormParser)
+    # permission_classes = [RoomAuthorOrTeacherOnly]
+    parser_classes = (parsers.MultiPartParser, parsers.FormParser, parsers.JSONParser)
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 
@@ -29,6 +31,8 @@ class NoteViewset(NestedViewSetMixin, viewsets.ModelViewSet):
         else:
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
 
 class NoteCommentViewset(NestedViewSetMixin, viewsets.ModelViewSet):
     serializer_class = NoteCommentSerializer
@@ -47,3 +51,23 @@ class NoteCommentViewset(NestedViewSetMixin, viewsets.ModelViewSet):
         else:
             print(serializer.errors)
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class NoteFileViewSet(NestedViewSetMixin,viewsets.ModelViewSet):
+    serializer_class = NoteFileSerializer
+    queryset = NoteFile.objects.filter(is_active=True)
+
+    def create(self, request, *args, **kwargs):
+        note_id = request.data.get('note_id')
+        data = []
+        for file in request.data.getlist('attachments[]'):
+            data.append({
+                'file': file,
+                'note': note_id
+            })
+        serializer = self.get_serializer(data=data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

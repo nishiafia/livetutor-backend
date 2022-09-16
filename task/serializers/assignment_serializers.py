@@ -54,7 +54,7 @@ class AssignmentSubmissionMarkSerializer(serializers.ModelSerializer):
 class AssignmentFilesSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignmentFile
-        fields = ['file']
+        fields = ['id','assignment','file']
 
 
 class AssignmentSerializer(TaskFileUploadMixin):

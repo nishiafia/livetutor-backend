@@ -13,7 +13,7 @@ class NoteCommentSerializer(serializers.ModelSerializer):
 class NoteFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = NoteFile
-        fields = ['file']
+        fields = ['id','note','file']
 
 
 class NoteSerializer(TaskFileUploadMixin):

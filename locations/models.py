@@ -18,6 +18,9 @@ class Country(MetaFields):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'Countries'
+
 
 class City(MetaFields):
     name = models.CharField(max_length=30)
@@ -27,7 +30,8 @@ class City(MetaFields):
 
     def __str__(self):
         return f'{self.name}'
-
+    class Meta:
+        verbose_name_plural = 'Cities'
 
 class Division(MetaFields):
     name = models.CharField(max_length=30)

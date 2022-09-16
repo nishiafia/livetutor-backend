@@ -1,5 +1,7 @@
+from cmath import log
 from urllib import request
 
+from categories.models import Category
 from django.db.models import Q
 from livetutor import mixins, pagination
 from livetutor.permissions import (CreateObjectPermission, ObjectPermission,
@@ -20,6 +22,15 @@ class RoomViewset(NestedViewSetMixin, viewsets.ModelViewSet, mixins.ExportMixin)
 
     # permission_classes = [ObjectPermission | CreateObjectPermission]
     # filter_backends = [filters.ObjectPermissionsFilter]
+
+    def get_category_pks(self,category_titles,user):
+        categories = []
+        if category_titles:
+            for category_title in category_titles:
+                category , created = Category.objects.get_or_create(title=category_title, user=user)
+                categories.append(category.id)
+        return categories
+
     def list(self, request):
         queryset = Room.objects.filter(
             Q(roomuser__user=request.user) | Q(author=request.user)).distinct()
@@ -30,8 +41,12 @@ class RoomViewset(NestedViewSetMixin, viewsets.ModelViewSet, mixins.ExportMixin)
     def create(self, request, *args, **kwargs):
         data = {
             'name': request.data.get('name'),
-            'author': request.user.id
+            'author': request.user.id,
         }
+        category_titles = request.data.get('categories')
+        if category_titles:
+            data['categories'] =  self.get_category_pks(category_titles,request.user)
+    
         serializer = self.get_serializer(
             data=data, context={'user_id': request.user.id})
         if serializer.is_valid():
@@ -47,6 +62,23 @@ class RoomViewset(NestedViewSetMixin, viewsets.ModelViewSet, mixins.ExportMixin)
         #         room=room, user=request.user, role='admin')
         #     return response.Response(
         #         {'room': RoomSerializer(room).data}, status=status.HTTP_201_CREATED)
+
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = request.data
+        category_titles = request.data.get('categories')
+        if category_titles:
+            data['categories'] =  self.get_category_pks(category_titles,request.user)
+        serializer = self.get_serializer(
+            instance=instance, data=data, partial=True, 
+            context={'user_id': request.user.id})
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     @action(detail=False, methods=['post'])
     def join(self, request, pk=None):
@@ -100,6 +132,10 @@ class RoomUserViewset(viewsets.ModelViewSet, NestedViewSetMixin, mixins.ExportMi
         if serializer.is_valid():
             serializer.save()
             return super().create(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        print(request.data)
+        return super().partial_update(request, *args, **kwargs)
 
     @ action(methods=['post'], detail=False, url_path='assign-bulk-room-users', )
     def assign_bulk_room_users(self, request, pk=None):

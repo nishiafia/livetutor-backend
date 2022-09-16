@@ -18,7 +18,7 @@ class ExamCommentSerializer(serializers.ModelSerializer):
 class ExamSubmissionFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamSubmissionFile
-        fields = ['file']
+        fields = ['id','exam_id','file']
 
 
 class ExamSubmissionSerializer(serializers.ModelSerializer):

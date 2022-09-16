@@ -85,3 +85,23 @@ class AssignmentCommentViewset(NestedViewSetMixin, ModelViewSet):
         else:
             print(serializer.errors)
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AssignmentFileViewSet(NestedViewSetMixin,ModelViewSet):
+    serializer_class = AssignmentFilesSerializer
+    queryset = AssignmentFile.objects.filter(is_active=True)
+
+    def create(self, request, *args, **kwargs):
+        assignment_id = request.data.get('assignment_id')
+        data = []
+        for file in request.data.getlist('attachments[]'):
+            data.append({
+                'file': file,
+                'assignment': assignment_id
+            })
+        serializer = self.get_serializer(data=data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
