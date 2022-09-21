@@ -139,7 +139,8 @@ USE_I18N = True
 USE_TZ = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://apps.meetingme.live",
+    # "http://apps.meetingme.live",
+    #'http://localhost:8080/'
 ]
 CORS_ALLOW_ALL_ORIGINS = True if DEBUG else False
 
@@ -151,16 +152,12 @@ CORS_ALLOW_ALL_ORIGINS = True if DEBUG else False
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-STATIC_URL = 'static/'
-AUTH_USER_MODEL = 'users.user'
 STATIC_ROOT =  os.path.join(BASE_DIR, "staticfiles") if DEBUG == True else "/var/www/livetutor/" 
-MEDIA_URL = 'media/'
+STATIC_URL = '/static/'
+AUTH_USER_MODEL = 'users.user'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAMEWORK = {
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    # 'PAGE_SIZE': 100
-
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )}
