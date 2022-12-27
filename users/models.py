@@ -26,6 +26,7 @@ class User(AbstractUser, MetaFields):
     USERNAME_FIELD = 'username'
 
     REQUIRED_FIELDS = ['phone', 'country']
+   # REQUIRED_FIELDS = ['phone']
 
     class Meta:
         unique_together = ('phone', 'country')

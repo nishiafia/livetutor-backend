@@ -1,3 +1,4 @@
+from requests import request
 from django.shortcuts import render
 from rest_framework import status, views, viewsets
 from rest_framework.decorators import action
@@ -18,8 +19,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def me(self, request, pk=None):
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
-    
-    
 
     @action(detail=False, methods=['post'])
     def verify(self, request, pk=None):
